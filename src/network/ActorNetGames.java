@@ -60,7 +60,7 @@ public class ActorNetGames implements OuvidorProxy {
 	public void receberJogada(Jogada jogada) {
 		// TODO Auto-generated method stub
 		Action action = (Action) jogada;
-		controller.getPlayed(action);
+		controller.setPlayed(action);
 	}
 
 	// DESCONECTAR POR ERRO
@@ -78,7 +78,7 @@ public class ActorNetGames implements OuvidorProxy {
 	}
 
 	// CASO DE USO INICIAR PARTIDA
-	public boolean inicializeNewGame(int quantity) {
+	public boolean startGame(int quantity) {
 		try {
 			proxy.iniciarPartida(quantity);
 			return true;
@@ -89,7 +89,7 @@ public class ActorNetGames implements OuvidorProxy {
 	}
 
 	// CASO DE USO FINALIZAR TURNO
-	public boolean sendAction(Action action) {
+	public boolean sendAction(Jogada action) {
 		try {
 			proxy.enviaJogada(action);
 			return true;
@@ -108,7 +108,7 @@ public class ActorNetGames implements OuvidorProxy {
 	}
 
 
-	public String otherPlayer(int position) {
+	public String getOtherPlayerName(int position) {
 		return proxy.obterNomeAdversario(position);		
 	}
 

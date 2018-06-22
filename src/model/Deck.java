@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Deck {
-	// Cartas do baralho
+	// CARTAS DO BARALHO
 	private ArrayList<WagonCard> cardsDeck;
 	
-	// Cartas da mesa
+	// CARTAS DA MESA
 	private WagonCard[] cardsBoard;
 	
-	// Cartas de objetivos
+	// CARTAS DE OBJETIVOS
 	private ArrayList<ObjectiveCard> objectives;
 		
 	public Deck(ArrayList<City> cities) {
@@ -46,6 +46,7 @@ public class Deck {
 		}
 	}
 
+	// COMPRA 3 OBJETIVOS
 	public ObjectiveCard[] buyObjectivies() {
 		ObjectiveCard[] buy = new ObjectiveCard[3];
 		buy[0] = this.objectives.remove(0);
@@ -53,6 +54,33 @@ public class Deck {
 		buy[2] = this.objectives.remove(0);
 		
 		return buy;
+	}
+
+	// COMPRAR UMA CARTA DO DECK
+	public WagonCard drawWagonCard() {
+		return this.cardsDeck.remove(0);
+	}
+
+	// ADICIONA OBJETIVOS AO FINAL DA LISTA
+	public void addObjectives(ObjectiveCard objectiveCard) {
+		this.objectives.add(objectiveCard);
+	}
+
+
+	public String[] getCardsBoard() {
+		String[] cards = {cardsBoard[0].toString(), cardsBoard[1].toString(), cardsBoard[2].toString(), cardsBoard[3].toString(), cardsBoard[4].toString()};
+		return cards;
+	}
+
+	// CARTA DA MESA É UM CORINGA
+	public boolean isJoker(int position) {
+		return this.cardsBoard[position].isJoker();
+	}
+
+	public WagonCard drawCardBoard(int position) {
+		WagonCard card = this.cardsBoard[position];
+		this.cardsBoard[position] = this.drawWagonCard();
+		return card;
 	}
 	
 }

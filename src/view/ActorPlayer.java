@@ -1,10 +1,14 @@
 package view;
 
+import java.util.ArrayList;
+
 import control.Controller;
 import network.Action;
-
+/*
+ * OBS: TIRAR BOTÃO FIM DO TURNO
+ */
 public class ActorPlayer {
-	// VERSÃO DOIS JOGADORES
+	// QUANTIDADE DE JOGADORES
 	private static final int QUANTIDADE_JOGADORES = 2;
 	
 	
@@ -12,16 +16,21 @@ public class ActorPlayer {
 	public static final int SUCCESSUFUL = 0;
 	public static final int ERRO = 1;
 	
-	// Controle - Adicionar Interface Grafica
+	// CONTROLADOR
 	private Controller controller;
 
+	// INTERFACE GRAFICA
+	private Windows windows;
+	
 	public ActorPlayer(Controller controller){
 		this.controller = controller;
-		// Instanciar interface grafica
+		this.windows = new Windows();
 	}
 	
-		
-	// CASO DE USO CONECTAR - INICIADO PELA INTERFACE GRAFICA - RETORNA BOOLEAN POIS PODE SER PRECISO DESATIVAR BOTÕES ETC...
+	
+	// CASOS DE USO INICIADOS PELA INTERFACE GRAFICA ------------------------------------
+	
+	// CASO DE USO CONECTAR 
 	public boolean connect(String server, String name) {
 		boolean connect = controller.connect(server, name);
 		
@@ -34,25 +43,66 @@ public class ActorPlayer {
 		return connect;
 	}
 	
-	// CASO DE USO INICIAR PARTIDA - INICIADO PELA INTERFACE GRAFICA - RETORNA BOOLEAN POIS PODE SER PRECISO DESATIVAR BOTÕES ETC...
+	// CASO DE USO INICIAR PARTIDA
 	public boolean startGame() {
 		 return controller.startGame(ActorPlayer.QUANTIDADE_JOGADORES);
 	}
 	
-	// CASO DE USO FINALIZAR AÇÃO - INICIADO PELA INTERFACE GRAFICA - RETORNA BOOLEAN POIS PODE SER PRECISO DESATIVAR BOTÕES ETC...
-	public boolean endTurn(Action action) {
-		boolean sucessuful = controller.endTurn(action);
-		
-		if (sucessuful) {
-			this.showMessage("Jogada enviada", ActorPlayer.SUCCESSUFUL);
-		} else {
-			this.showMessage("Jogada não enviada", ActorPlayer.ERRO);
-		}
-		
-		return sucessuful;
+	// CASO DE USO COMPRAR OBJETIVOS
+	public void drawObjetives() {
+		this.controller.drawObjectives();
 	}
 	
-	// MENSAGENS PARA NOTIFICAR USUARIO DE SUAS AÇÕES POR CAIXAS DE DIALOGO --- VERSAO TESTE
+	// CASO DE USO COMPRAR OBJETIVOS - ESCOLHER OBJETIVOS - POSIÇÕES ESCOLHIDA COM VERDADEIRA
+	// ESCOLHER OBJETIVO RESTRIÇÃO ESCOLHER NO MINIMO 2 OBJETIVOS (TRUE)
+	public boolean[] showObjectives(String[] obj, boolean restriction) {
+		return null;
+	}
+	
+	// CASO DE USO COMPRAR CARTAS
+	public void drawCards() {
+		this.controller.drawCards();
+	}
+	
+	// CASO DE USO COMPRAR CARTA - ESCOLHER DECK(TRUE) OU MESA 
+	public boolean chooseDeckOrBoard() {
+		
+		return false;
+	}
+	
+	// CASO DE USO COMPRAR CARTA - 1 CARTA DA MESA - RETORNAR POSIÇÃO ESCOLHIDA 
+	public int chooseCardsBoard(String[] cardsBoard) {
+		return 0;
+	}
+	
+
+	// CASO DE USO CONSTRUIR LINHA --- INCOMPLETO
+	public void buildLine() {
+		this.controller.buildLine();
+	}
+	
+	// CASO DE USO CONTRUIR LINHA -- ....
+	public String chooseLine(ArrayList<String> linesId) {
+		// IMPLEMENTAR
+		return null;
+	}
+	
+	// CASO DE USO CONSTRUIR LINHA -- ....
+	public ArrayList<String> chooseCards(ArrayList<String> cardsInfo) {
+		// IMPLEMENTAR
+		return null;
+	}
+
+	
+	// CASO DE USO DESCONECTAR
+	public void disconnect() {
+		controller.disconnectGUI();
+		this.showMessage("DESCONECTOU", ActorPlayer.SUCCESSUFUL);
+	}
+	
+	// ---------------------------------------------------------------------------------------
+	
+	// MENSAGENS PARA NOTIFICAR USUARIO DE SUAS AÇÕES POR CAIXAS DE DIALOGO --- TESTAR CODIGO
 	public void showMessage(String message, int type) {
 		if(ActorPlayer.SUCCESSUFUL == type)
 			System.out.println(message);
@@ -61,29 +111,9 @@ public class ActorPlayer {
 		}
 	}
 	
-
-
-	// CASO DE USO RECEBER JOGADA
-	public void updateInterface(Action action) {
-		// TODO Auto-generated method stub
+	// CASO DE USO RECEBER JOGADA - ATUALIZAR INTERFACE GRAFICA COM A JOGADA RECEBIDA
+	public void updateInterface() {
+		// IMPLEMENTAR
 	}
 
-	
-	// CASO DE USO DESCONECTAR --- NÃO FINALIZADO
-	public void disconnect() {
-		controller.disconnectGUI();
-		this.showMessage("DESCONECTOU", ActorPlayer.SUCCESSUFUL);
-	}
-
-
-	public boolean[] showObjectives(String[] objetives) {
-		/*
-		 * Chamar Interface grafica
-		 * retorna true para as posiçoes a qual o jogar escolheu o objetivo
-		 * 
-		 */
-
-		boolean[] b = {false, true, false};
-		return b; 
-	}
 }

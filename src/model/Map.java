@@ -24,8 +24,12 @@ public class Map {
 	private ArrayList<City> cities;
 	
 	
-	public ArrayList<Line> getLines() {
-		return lines;
+	public ArrayList<String> getLines() {
+		ArrayList<String> lineId = new ArrayList();
+		for (Line it : this.lines) {
+			lineId.add(it.toString());
+		}
+		return lineId;
 	}
 
 	public ArrayList<City> getCities() {
