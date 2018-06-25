@@ -5,21 +5,23 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class GUIMain extends Application {
+public class GUIMain{
 
     private Stage window;
-    private GUIData data = new GUIData();
+    private ActorPlayer actorPlayer;
     private GUIBottom bottom;
     private GUICenter center;
     private GUILeft left;
     private GUITop top;
+    private GUIData data = new GUIData();
 
-    public static void main(String[] args) {
-        launch(args);
+
+    GUIMain(ActorPlayer actorPlayer, Stage primaryStage) {
+        this.actorPlayer = actorPlayer;
+        this.start(primaryStage);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
 
         data.initPlayers();
         window = primaryStage;
@@ -47,7 +49,7 @@ public class GUIMain extends Application {
     }
 
     private void buildTop(BorderPane mainLayout) {
-        top = new GUITop(this, mainLayout, data, window);
+        top = new GUITop(this, mainLayout, actorPlayer, window);
         mainLayout.setTop(top.getTopLayout());
     }
 

@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
@@ -43,11 +42,12 @@ public class GUICenter {
         ToggleGroup routeGroup = new ToggleGroup();
 
         data.initRoutes();
+        data.initRoutesSizes();
         Boolean consumed = false;
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 13; j ++) {
-                ToggleButton route = buildConstructOption(data.getRoutes().get(j));
+                ToggleButton route = buildConstructOption(data.getRoutes().get(j) + " " + data.getRoutesSize().get(j));
                 route.setUserData(consumed);
                 route.setToggleGroup(routeGroup);
                 GridPane.setConstraints(route, i, j);

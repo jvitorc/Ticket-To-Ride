@@ -11,10 +11,10 @@ import javafx.stage.Stage;
 
 public class GUIConnect {
 
-    private static GUIData data;
+    private static ActorPlayer actorPlayer;
 
-    public static void setData(GUIData data) {
-        GUIConnect.data = data;
+    public static void setActorPlayer(ActorPlayer actorPlayer) {
+        GUIConnect.actorPlayer = actorPlayer;
     }
 
     public static void display() {
@@ -38,7 +38,7 @@ public class GUIConnect {
         nameInput.setPromptText("Nome");
         GridPane.setConstraints(nameInput, 1, 0, 10, 1);
 
-        TextField serverInput = new TextField("localhost:");
+        TextField serverInput = new TextField("127.0.0.1");
         GridPane.setConstraints(serverInput, 1, 1, 10 , 1);
 
         Button connectButton = new Button("Conectar");
@@ -62,7 +62,6 @@ public class GUIConnect {
     }
 
     private static void connect(String nameInput, String serverInput) {
-        data.setName(nameInput);
-        data.setServer(serverInput);
+        actorPlayer.connect(serverInput, nameInput);
     }
 }

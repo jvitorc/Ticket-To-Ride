@@ -16,14 +16,15 @@ class GUITop {
     private BorderPane topLayout;
     private Stage window;
     private Stage map;
+    private ActorPlayer actorPlayer;
 
-    GUITop(GUIMain main, BorderPane mainLayout, GUIData data, Stage window) {
+    GUITop(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer, Stage window) {
         this.main = main;
         this.mainLayout = mainLayout;
-        this.data = data;
+        this.actorPlayer = actorPlayer;
         this.window = window;
         this.topLayout = buildTop();
-        GUIConnect.setData(data);
+        GUIConnect.setActorPlayer(actorPlayer);
 
     }
 

@@ -10,6 +10,7 @@ public class GUIData {
     private List<String> boardCards = new ArrayList<>();
     private List<GUIPlayer> players = new ArrayList<>();
     private List<String> routes = new ArrayList<>();
+    private List<Integer> routesSize = new ArrayList<>();
     private List<String> objectives = new ArrayList<>();
     private boolean disconnect;
     private int acao;
@@ -95,6 +96,27 @@ public class GUIData {
         this.routes.add("Inverness - Sky");
         this.routes.add("Teste - Teste2");
         this.routes.add("Cansei - Também");
+    }
+
+    public List<Integer> getRoutesSize() {
+        return routesSize;
+    }
+
+    public void initRoutesSizes() {
+        this.routesSize.add(2);
+        this.routesSize.add(4);
+        this.routesSize.add(6);
+        this.routesSize.add(5);
+        this.routesSize.add(2);
+        this.routesSize.add(7);
+        this.routesSize.add(8);
+        this.routesSize.add(4);
+        this.routesSize.add(5);
+        this.routesSize.add(2);
+        this.routesSize.add(4);
+        this.routesSize.add(3);
+        this.routesSize.add(2);
+        this.routesSize.add(5);
     }
 
     public List<String> getObjectives() {

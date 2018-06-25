@@ -3,6 +3,8 @@ package control;
 import java.util.ArrayList;
 
 import br.ufsc.inf.leobr.cliente.Jogada;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import model.*;
 import network.*;
 import view.*;
@@ -13,24 +15,24 @@ public class Controller {
 	private ActorPlayer actor;
 	private ActorNetGames netGames;
 
-	// CONTROLE DA CONEXÃO
+	// CONTROLE DA CONEXï¿½O
 	private boolean connect;
 	
 	// CONTROLE DE TURNO
 	private boolean playerTurn;
 
-	// CONTROLE DE ÚLTIMO TURNO
+	// CONTROLE DE ï¿½LTIMO TURNO
 	private boolean lastTurn;
 	
 	// MESA - MAPA + BARALHO + JOGADORES - REGRAS DE JOGO
 	private Board board;
 
 	
-	public Controller() {
-		this.actor = new ActorPlayer(this);
+	public Controller(Stage primaryStage) {
+		this.actor = new ActorPlayer(this, primaryStage);
 		this.netGames = new ActorNetGames(this);
 	}
-	
+
 	//////////////// TESTE /////////////////
 	public ActorPlayer getActorPlayer() {
 		return actor;
@@ -49,10 +51,10 @@ public class Controller {
 		return netGames.startGame(quantity);
 	}
 
-	// CASO DE USO RECEBER SOLICITÇÃO DE INICIO
+	// CASO DE USO RECEBER SOLICITï¿½ï¿½O DE INICIO
 	public void startNewGame(Integer position) {
 
-		// CALCULAR POSIÇÃO DO OPONENTE
+		// CALCULAR POSIï¿½ï¿½O DO OPONENTE
 		int otherPosition;
 		if (position == 1) {
 			otherPosition = 2;
@@ -60,18 +62,18 @@ public class Controller {
 			otherPosition = 1;
 		}
 		
-		// CRIAR JOGADORES - POSIÇÃO
+		// CRIAR JOGADORES - POSIï¿½ï¿½O
 		Player player = new Player(netGames.getOtherPlayerName(position), position);
 		Player otherPlayer = new Player(netGames.getOtherPlayerName(otherPosition), otherPosition);
 		
-		// VERIFICAR SE É TURNO DO JOGADOR
+		// VERIFICAR SE ï¿½ TURNO DO JOGADOR
 		if (position == 1) {
 			this.playerTurn = true;
 		} else {
 			this.playerTurn = false;
 		}
 	
-		// CORES DO JOGADORES - POSIÇÃO INICIAL DECIDE AS CORES
+		// CORES DO JOGADORES - POSIï¿½ï¿½O INICIAL DECIDE AS CORES
 		player.setColor(position);
 		otherPlayer.setColor(otherPosition);
 		
@@ -93,12 +95,12 @@ public class Controller {
 		actor.showMessage(player.getName() + " : " + player.getColor() + " - Esperar jogador " + otherPlayer.getName() + " : " + otherPlayer.getColor() , ActorPlayer.SUCCESSUFUL);
 	}
 
-	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRIÇÃO NA INTERFACE GRAFICA
+	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRIï¿½ï¿½O NA INTERFACE GRAFICA
 	private void chooseObjectives() {
 		// COMPRA 3 CARTAS
 		ObjectiveCard[] objectives = board.buyObjectivies();
 
-		// INFORMAÇÃO DA CARTA PARA PASSAR PARA INTERFACE
+		// INFORMAï¿½ï¿½O DA CARTA PARA PASSAR PARA INTERFACE
 		String[] obj = new String[3];
 		obj[0] = objectives[0].toString();
 		obj[1] = objectives[1].toString();
@@ -115,7 +117,7 @@ public class Controller {
 			}
 		}
 		
-		// OBJETIVOS NÃO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+		// OBJETIVOS Nï¿½O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
 		for (int i = 0; i < choose.length; i++) {
 			if (choose[i] == true) {
 				this.board.addObjectives(objectives[i]);
@@ -124,10 +126,10 @@ public class Controller {
 		
 		Action action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
 
-		// RECEBE MÃO INICIAL
+		// RECEBE Mï¿½O INICIAL
 		action.startHand = board.startHand(null);
 		
-		// ENVIA PREPARAÇÃO PARA OPONENTE
+		// ENVIA PREPARAï¿½ï¿½O PARA OPONENTE
 		action.deck = board.getDeck();
 		action.objectives = board.getPlayer().getObjectives();
 
@@ -141,7 +143,7 @@ public class Controller {
 		// COMPRA 3 CARTAS
 		ObjectiveCard[] objectives = board.buyObjectivies();
 
-		// INFORMAÇÃO DA CARTA PARA PASSAR PARA INTERFACE
+		// INFORMAï¿½ï¿½O DA CARTA PARA PASSAR PARA INTERFACE
 		String[] obj = new String[3];
 		obj[0] = objectives[0].toString();
 		obj[1] = objectives[1].toString();
@@ -157,7 +159,7 @@ public class Controller {
 			}
 		}
 		
-		// OBJETIVOS NÃO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+		// OBJETIVOS Nï¿½O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
 		for (int i = 0; i < choice.length; i++) {
 			if (choice[i] == true) {
 				this.board.addObjectives(objectives[i]);
@@ -191,7 +193,7 @@ public class Controller {
 			action.drawBoardCard = new int[2];
 			action.drawBoardCard[0] = choice;
 			action.drawBoardCard[1] = -1;
-			// CARTA DA MESA É UM CORINGA
+			// CARTA DA MESA ï¿½ UM CORINGA
 			boolean joker = board.getDeck().isJoker(choice);
 
 			if(!joker) {
@@ -206,7 +208,7 @@ public class Controller {
 					// ESCOLHER CARTA DA MESA
 					choice = actor.chooseCardsBoard(this.board.getDeck().getCardsBoard());
 					
-					// CARTA DA MESA É UM CORINGA
+					// CARTA DA MESA ï¿½ UM CORINGA
 					joker = board.getDeck().isJoker(choice);
 
 					if(!joker) {
@@ -229,7 +231,7 @@ public class Controller {
 		// ESCOLHER LINHA
 		int line = actor.chooseLine(lines);
 
-		// PEGA A INFORMAÇÕES DAS CARTAS DOS JOGADORES
+		// PEGA A INFORMAï¿½ï¿½ES DAS CARTAS DOS JOGADORES
 		ArrayList<String> cardsInfo = this.board.getPlayerCards();
 
 		// ESCOLHE AS CARTAS
@@ -253,7 +255,7 @@ public class Controller {
 	}
 	
 	
-	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO NÃO IMPLEMENTADO
+	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO Nï¿½O IMPLEMENTADO
 	public boolean endTurn(Action action) {
 
 		// ATUALIZAR PROXIMO JOGADOR
@@ -261,7 +263,7 @@ public class Controller {
 		return this.netGames.sendAction(action);
 	}
 
-	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO NÃO IMPLEMENTADO
+	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO Nï¿½O IMPLEMENTADO
 	public void setPlayed(Action action) {
 		switch(action.action) {
 		
@@ -274,7 +276,7 @@ public class Controller {
 					this.board.getOtherPlayer().addObjectives(action.objectives.remove(0));
 				}
 				
-				// RECEBER MÃO INICIAL
+				// RECEBER Mï¿½O INICIAL
 				this.board.startHand(action.startHand);
 				break;
 			
@@ -292,7 +294,7 @@ public class Controller {
 					}
 				}
 				
-				// OBJETIVOS NÃO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+				// OBJETIVOS Nï¿½O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
 				for (int i = 0; i < choice.length; i++) {
 					if (choice[i] == true) {
 						this.board.addObjectives(objectives[i]);
@@ -343,9 +345,9 @@ public class Controller {
 	}
 
 	private void endGame() {
-		// CALCULAR PONTUAÇÃO DE CADA JOGADDOR
+		// CALCULAR PONTUAï¿½ï¿½O DE CADA JOGADDOR
 		
-		// MOSTRAR PONTUAÇÃO
+		// MOSTRAR PONTUAï¿½ï¿½O
 		
 		// RESTART
 		this.clear();

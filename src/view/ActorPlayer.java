@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import control.Controller;
+import javafx.stage.Stage;
 import network.Action;
 
 public class ActorPlayer {
 	// QUANTIDADE DE JOGADORES
 	private static final int QUANTIDADE_JOGADORES = 2;
-	
-	
+
 	// TIPOS DE MENSAGEM
 	public static final int SUCCESSUFUL = 0;
 	public static final int ERRO = 1;
@@ -19,18 +19,16 @@ public class ActorPlayer {
 	private Controller controller;
 
 	// INTERFACE GRAFICA
-	private Windows windows;
+	private GUIMain window;
 	
-	public ActorPlayer(Controller controller){
+	public ActorPlayer(Controller controller, Stage primaryStage) {
 		this.controller = controller;
-		this.windows = new Windows();
+		this.window = new GUIMain(this, primaryStage);
 	}
-	
-	
-	// CASOS DE USO INICIADOS PELA INTERFACE GRAFICA ------------------------------------
-	
+
 	// CASO DE USO CONECTAR 
 	public boolean connect(String server, String name) {
+		System.out.println("AQUI");
 		boolean connect = controller.connect(server, name);
 		
 		if (connect) {

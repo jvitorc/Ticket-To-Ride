@@ -1,17 +1,17 @@
-import java.util.Scanner;
-
 import control.Controller;
-import model.*;
-import network.Action;
-import view.ActorPlayer;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class Main {
+public class Main extends Application{
 
 	public static final String server =  "127.0.0.1";
 	
 	public static void main(String[] args) {
-	//	Teste.Simulacao(new Scanner(System.in));
-		Teste.map();
+		launch(args);
 	}
 
+	@Override
+    public void start(Stage primaryStage) {
+        Controller controller = new Controller(primaryStage);
+    }
 }

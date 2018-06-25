@@ -9,7 +9,7 @@ import view.*;
 public class Teste {
 	
 	public static void Simulacao(Scanner scan) {
-		Controller c = new Controller();
+		Controller c = new Controller(null);
 		ActorPlayer actor = c.getActorPlayer();
 		
 		System.out.print("Digite seu nome: ");
@@ -18,7 +18,7 @@ public class Teste {
 		System.out.println("CASO DE USO CONECTAR");
 		actor.connect(Main.server, name);
 		
-		System.out.println("CASO DE USO INICIAR PARTIDA / RECEBER SOLICITAÇÃO DE INICIO");
+		System.out.println("CASO DE USO INICIAR PARTIDA / RECEBER SOLICITAï¿½ï¿½O DE INICIO");
 		System.out.print("Iniciar Partida: ");
 		if (scan.nextBoolean()) {
 			actor.startGame();
