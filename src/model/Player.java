@@ -63,5 +63,10 @@ public class Player {
 			/// IMPLEMENTAR
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "Player [name=" + name + ", color=" + color + "]";
+	}
 	
 }

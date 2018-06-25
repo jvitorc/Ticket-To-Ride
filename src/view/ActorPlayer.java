@@ -1,12 +1,11 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import control.Controller;
 import network.Action;
-/*
- * OBS: TIRAR BOTÃO FIM DO TURNO
- */
+
 public class ActorPlayer {
 	// QUANTIDADE DE JOGADORES
 	private static final int QUANTIDADE_JOGADORES = 2;
@@ -56,7 +55,9 @@ public class ActorPlayer {
 	// CASO DE USO COMPRAR OBJETIVOS - ESCOLHER OBJETIVOS - POSIÇÕES ESCOLHIDA COM VERDADEIRA
 	// ESCOLHER OBJETIVO RESTRIÇÃO ESCOLHER NO MINIMO 2 OBJETIVOS (TRUE)
 	public boolean[] showObjectives(String[] obj, boolean restriction) {
-		return null;
+		// TESTE ----------
+		boolean[] b = {true, true, false};
+		return b;
 	}
 	
 	// CASO DE USO COMPRAR CARTAS
@@ -113,7 +114,8 @@ public class ActorPlayer {
 	
 	// CASO DE USO RECEBER JOGADA - ATUALIZAR INTERFACE GRAFICA COM A JOGADA RECEBIDA
 	public void updateInterface() {
-		// IMPLEMENTAR
+		// Teste
+		System.out.println("FIM...");
 	}
 
 }

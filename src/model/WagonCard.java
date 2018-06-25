@@ -1,6 +1,8 @@
 package model;
 
-public class WagonCard {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class WagonCard implements Jogada {
 	// PRONTO
 	public static final int MULTICOLOR = 0;
 	public static final int PURPLE = 1;
@@ -25,5 +27,12 @@ public class WagonCard {
 	public boolean isJoker() {
 		return this.color == WagonCard.MULTICOLOR;
 	}
+
+	@Override
+	public String toString() {
+		return "WagonCard [color = " + color + "]";
+	}
+	
+
 	
 }

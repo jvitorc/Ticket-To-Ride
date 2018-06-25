@@ -1,6 +1,7 @@
 package network;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import br.ufsc.inf.leobr.cliente.Jogada;
 import model.Deck;
@@ -40,6 +41,13 @@ public class Action implements Jogada {
 	
 	// POSIÇÃO DAS CARTAS COMPRADA NA MESA
 	public int[] drawBoardCard;
+
+	@Override
+	public String toString() {
+		return "Action [action=" + action + ", player=" + player + ", deck=" + deck + ", objectives=" + objectives
+				+ ", lastTurn=" + lastTurn + ", choice=" + Arrays.toString(choice) + ", buyDeckCard=" + buyDeckCard
+				+ ", drawBoardCard=" + Arrays.toString(drawBoardCard) + "]";
+	}
 
 	
 

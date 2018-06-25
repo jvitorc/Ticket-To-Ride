@@ -2,7 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
-public class City {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class City implements Jogada {
 	// PRONTO
 	private String name;
 	

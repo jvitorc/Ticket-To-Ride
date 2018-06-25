@@ -3,7 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Deck {
+import br.ufsc.inf.leobr.cliente.Jogada;
+
+public class Deck implements Jogada {
 	// CARTAS DO BARALHO
 	private ArrayList<WagonCard> cardsDeck;
 	
@@ -14,18 +16,16 @@ public class Deck {
 	private ArrayList<ObjectiveCard> objectives;
 		
 	public Deck(ArrayList<City> cities) {
-		
-		// Criar objetivo card ---- TESTE -------
-		for (City a: cities) {
-			for (City b: cities) {
-				if (a != b) {
-					objectives.add(new ObjectiveCard(2, a, b));
-				}
-			}
-		}	
-		//-------------------------------------------
+				
+		// TESTE
+		this.objectives = new ArrayList<ObjectiveCard>();
+		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
 		
 		// Adiciona as 14 cartas curinga
+		this.cardsDeck = new ArrayList<WagonCard>();
 		for (int i = 0; i < 14; i++) {
 			cardsDeck.add(new WagonCard(WagonCard.MULTICOLOR));
 		}
@@ -45,7 +45,7 @@ public class Deck {
 			cardsBoard[i] = cardsDeck.remove(0);
 		}
 	}
-
+	
 	// COMPRA 3 OBJETIVOS
 	public ObjectiveCard[] buyObjectivies() {
 		ObjectiveCard[] buy = new ObjectiveCard[3];
@@ -81,6 +81,14 @@ public class Deck {
 		WagonCard card = this.cardsBoard[position];
 		this.cardsBoard[position] = this.drawWagonCard();
 		return card;
+	}
+
+	public ArrayList<WagonCard> getCardsDeck() {
+		return cardsDeck;
+	}
+
+	public ArrayList<ObjectiveCard> getObjectives() {
+		return objectives;
 	}
 	
 }

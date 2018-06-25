@@ -47,9 +47,14 @@ public class Controller {
 
 	// CASO DE USO RECEBER SOLICITÇÃO DE INICIO
 	public void startNewGame(Integer position) {
-		
+
 		// CALCULAR POSIÇÃO DO OPONENTE
-		int otherPosition = ((position + 1) % 2) + 1;
+		int otherPosition;
+		if (position == 1) {
+			otherPosition = 2;
+		} else {
+			otherPosition = 1;
+		}
 		
 		// CRIAR JOGADORES - POSIÇÃO
 		Player player = new Player(netGames.getOtherPlayerName(position), position);
@@ -78,13 +83,12 @@ public class Controller {
 		if (this.playerTurn) {
 			// RECEBE MÃO INICIAL
 			board.startHand();
-			
 			// CASO DE USO ESCOLHER OBJETIVOS
 			this.chooseObjectives();
 		}
 		
 		// TESTE
-		actor.showMessage("Esperar outro jogador", ActorPlayer.SUCCESSUFUL);
+		actor.showMessage(player.getName() + " : " + player.getColor() + " - Esperar jogador " + otherPlayer.getName() + " : " + otherPlayer.getColor() , ActorPlayer.SUCCESSUFUL);
 	}
 
 	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRIÇÃO NA INTERFACE GRAFICA
@@ -100,7 +104,7 @@ public class Controller {
 		
 		// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
 		boolean[] choose = actor.showObjectives(obj, true);
-		
+	
 		// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
 		for (int i = 0; i < choose.length; i++) {
 			if (choose[i] == true) {
@@ -161,7 +165,7 @@ public class Controller {
 		this.endTurn(action);
 	}
 	
-	// CASOU DE USO COMPRAR CARTAs
+	// CASOU DE USO COMPRAR CARTAS
 	public void drawCards() {
 		Action action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());
 		
@@ -241,7 +245,6 @@ public class Controller {
 	
 	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO NÃO IMPLEMENTADO
 	public boolean endTurn(Action action) {
-
 		// ATUALIZAR PROXIMO JOGADOR
 		this.playerTurn = false;
 		return this.netGames.sendAction(action);
@@ -252,7 +255,6 @@ public class Controller {
 	
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO NÃO IMPLEMENTADO
 	public void setPlayed(Action action) {
-		
 		switch(action.action) {
 		
 			case Action.CHOOSE_OBJECTIVE:
@@ -314,9 +316,6 @@ public class Controller {
 		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
 
-		// TESTE -- JOGADOR
-		if(action.player.equals(this.board.getOtherPlayer().getName()))
-			System.out.println("OUTRO JOGADOR CORRETO");
 		// TESTE --- ATUALIZAR TELA 
 		actor.updateInterface();
 	}

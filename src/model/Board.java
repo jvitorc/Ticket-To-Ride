@@ -32,7 +32,7 @@ public class Board {
 	}
 
 	public void setDeck(Deck deck) {
-		if (deck == null) {
+		if (this.deck == null) {
 			this.deck = deck;
 		}
 	}
@@ -83,7 +83,7 @@ public class Board {
 	}
 	
 	public ArrayList<String> getLines() {
-		return this.map.getLines();
+		return this.map.getLinesInfo();
 	}
 
 	public void addOtherPlayerObjectives(ObjectiveCard objectiveCard) {
