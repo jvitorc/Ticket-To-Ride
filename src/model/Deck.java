@@ -23,6 +23,18 @@ public class Deck implements Jogada {
 		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
 		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
 		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
+		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
 		
 		// Adiciona as 14 cartas curinga
 		this.cardsDeck = new ArrayList<WagonCard>();
@@ -72,7 +84,7 @@ public class Deck implements Jogada {
 		return cards;
 	}
 
-	// CARTA DA MESA É UM CORINGA
+	// CARTA DA MESA ï¿½ UM CORINGA
 	public boolean isJoker(int position) {
 		return this.cardsBoard[position].isJoker();
 	}

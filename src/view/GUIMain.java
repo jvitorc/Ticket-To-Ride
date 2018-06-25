@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class GUIMain{
+public class GUIMain {
 
     private Stage window;
     private ActorPlayer actorPlayer;
@@ -15,8 +15,7 @@ public class GUIMain{
     private GUITop top;
     private GUIData data = new GUIData();
     private BorderPane mainLayout;
-
-
+    
     GUIMain(ActorPlayer actorPlayer, Stage primaryStage) {
         this.actorPlayer = actorPlayer;
         this.start(primaryStage);
@@ -59,7 +58,7 @@ public class GUIMain{
     }
 
     void buildLeft(BorderPane mainLayout) {
-        left = new GUILeft(this, mainLayout, data);
+        left = new GUILeft(this, mainLayout, actorPlayer);
         mainLayout.setLeft(left.getLeft());
     }
 

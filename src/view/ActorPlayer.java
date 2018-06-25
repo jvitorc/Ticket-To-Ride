@@ -22,21 +22,24 @@ public class ActorPlayer {
 
 	// CASO DE USO CONECTAR 
 	public boolean connect(String server, String name) {
-		System.out.println("AQUI");
 		boolean connect = controller.connect(server, name);
 		
 		if (connect) {
 			this.showMessage("Conectou", ActorPlayer.SUCCESSUFUL);
 		} else {
-			this.showMessage("Não conectou", ActorPlayer.ERRO);
+			this.showMessage("Nï¿½o conectou", ActorPlayer.ERRO);
 		}
 		
 		return connect;
 	}
 	
 	// CASO DE USO INICIAR PARTIDA
-	public boolean startGame() {
-		 return controller.startGame(ActorPlayer.QUANTIDADE_JOGADORES);
+	public void startGame() {
+		controller.startGame(ActorPlayer.QUANTIDADE_JOGADORES);
+	}
+	
+	public boolean getStart() {
+		return controller.getStart();
 	}
 	
 	// CASO DE USO COMPRAR OBJETIVOS
@@ -44,10 +47,11 @@ public class ActorPlayer {
 		this.controller.drawObjectives();
 	}
 	
-	// CASO DE USO COMPRAR OBJETIVOS - ESCOLHER OBJETIVOS - POSIÇÕES ESCOLHIDA COM VERDADEIRA
-	// ESCOLHER OBJETIVO RESTRIÇÃO ESCOLHER NO MINIMO 2 OBJETIVOS (TRUE)
+	// CASO DE USO COMPRAR OBJETIVOS - ESCOLHER OBJETIVOS - POSIï¿½ï¿½ES ESCOLHIDA COM VERDADEIRA
+	// ESCOLHER OBJETIVO RESTRIï¿½ï¿½O ESCOLHER NO MINIMO 2 OBJETIVOS (TRUE)
 	public boolean[] showObjectives(String[] obj, boolean restriction) {
-		boolean[] choice = GUIChooseObjectiveBox.display(obj);
+		GUIChooseObjectiveBox.display(obj);
+		boolean[] choice = GUIChooseObjectiveBox.getChoice();
 		window.buildLeft(window.getMainLayout());
 		return choice;
 	}
@@ -63,7 +67,7 @@ public class ActorPlayer {
 		return false;
 	}
 	
-	// CASO DE USO COMPRAR CARTA - 1 CARTA DA MESA - RETORNAR POSIÇÃO ESCOLHIDA 
+	// CASO DE USO COMPRAR CARTA - 1 CARTA DA MESA - RETORNAR POSIï¿½ï¿½O ESCOLHIDA 
 	public int chooseCardsBoard(String[] cardsBoard) {
 		return 0;
 	}
@@ -99,13 +103,9 @@ public class ActorPlayer {
 	
 	// ---------------------------------------------------------------------------------------
 	
-	// MENSAGENS PARA NOTIFICAR USUARIO DE SUAS AÇÕES POR CAIXAS DE DIALOGO --- TESTAR CODIGO
+	// MENSAGENS PARA NOTIFICAR USUARIO DE SUAS Aï¿½ï¿½ES POR CAIXAS DE DIALOGO --- TESTAR CODIGO
 	public void showMessage(String message, int type) {
-		if(ActorPlayer.SUCCESSUFUL == type)
-			System.out.println(message);
-		else {
-			System.err.println(message);
-		}
+		GUIMessageBox.display("Alerta", message);
 	}
 	
 	// CASO DE USO RECEBER JOGADA - ATUALIZAR INTERFACE GRAFICA COM A JOGADA RECEBIDA
@@ -114,4 +114,17 @@ public class ActorPlayer {
 		System.out.println("FIM...");
 	}
 
+	public ArrayList<String> getPlayerObjectives() {
+		return controller.getPlayerObjectives();
+	}
+
+	public String[] getObjectives() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void buyObjective() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -14,19 +14,10 @@ import javafx.stage.Stage;
 
 public class GUIChooseObjectiveBox {
 
-    private static GUIData data;
     private static boolean[] choice = { false, false, false };
 
-    GUIChooseObjectiveBox(GUIData data) {
-        GUIChooseObjectiveBox.data = data;
-    }
-
-    public static boolean[] display(String[] obj) {
-        Stage window = new Stage();
-
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Objetivos");
-
+    public static void display(String[] obj) {
+        
         StackPane pane = new StackPane();
         pane.setPrefSize(250,100);
 
@@ -51,27 +42,28 @@ public class GUIChooseObjectiveBox {
         objectives.setSpacing(2);
         objectives.getChildren().addAll(objective1, objective2, objective3);
 
+        Stage janela = new Stage();
+        janela.initModality(Modality.APPLICATION_MODAL);
+        janela.setTitle("Objetivos");
+        
         Button buttonConfirm = new Button("Confirmar");
         buttonConfirm.setOnAction(e -> {
             if (objective1.isSelected()) {
-                data.addObjective(objective1.getText());
                 choice[0] = true;
             }
             if (objective2.isSelected()) {
-                data.addObjective(objective2.getText());
                 choice[1] = true;
             }
             if (objective3.isSelected()) {
-                data.addObjective(objective3.getText());
                 choice[2] = true;
             }
-            window.close();
+            janela.close();
         });
         buttonConfirm.setPadding(new Insets(5, 20, 5, 20));
 
         Button buttonDecline = new Button("Cancelar");
         buttonDecline.setOnAction(e -> {
-            window.close();
+        	janela.close();
         });
         buttonDecline.setPadding(new Insets(5, 20, 5, 20));
 
@@ -87,9 +79,12 @@ public class GUIChooseObjectiveBox {
         pane.getChildren().add(confirmBoxLayout);
         StackPane.setAlignment(confirmBoxLayout, Pos.CENTER_LEFT);
 
-        window.setScene(new Scene(pane));
-        window.showAndWait();
+        janela.setScene(new Scene(pane));
+        janela.showAndWait();
 
-        return choice;
+    }
+    
+    public static boolean[] getChoice() {
+    	return choice;
     }
 }

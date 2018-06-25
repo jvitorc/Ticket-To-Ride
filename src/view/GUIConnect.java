@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 public class GUIConnect {
 
     private static Stage window;
-
     private static ActorPlayer actorPlayer;
 
     public static void setActorPlayer(ActorPlayer actorPlayer) {

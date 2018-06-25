@@ -14,32 +14,27 @@ public class Controller {
 	// ATORES
 	private ActorPlayer actor;
 	private ActorNetGames netGames;
+	private boolean start = false;
 
-	// CONTROLE DA CONEX�O
+	private Action action = null;
 	private boolean connect;
-	
-	// CONTROLE DE TURNO
 	private boolean playerTurn;
-
-	// CONTROLE DE �LTIMO TURNO
-	private boolean lastTurn;
-	
-	// MESA - MAPA + BARALHO + JOGADORES - REGRAS DE JOGO
+	private boolean lastTurn;	
 	private Board board;
-
+	private boolean chooseObjectives;
 	
 	public Controller(Stage primaryStage) {
 		this.actor = new ActorPlayer(this, primaryStage);
 		this.netGames = new ActorNetGames(this);
 	}
-
-	//////////////// TESTE /////////////////
+	
 	public ActorPlayer getActorPlayer() {
 		return actor;
 	}
-	//--------------------------------------
 	
-	
+	public boolean getChoosseObjectives() {
+		return this.chooseObjectives;
+	}
 	// CASO DE USO CONECTAR
 	public boolean connect(String server, String name) {
 		this.connect =  netGames.connect(server, name);
@@ -47,8 +42,13 @@ public class Controller {
 	}
 	
 	// CASO DE USO INICIAR PARTIDA
-	public boolean startGame(int quantity) {
-		return netGames.startGame(quantity);
+	public void startGame(int quantity) {
+		start = true;
+		netGames.startGame(quantity);
+	}
+	
+	public boolean getStart() {
+		return this.start;
 	}
 
 	// CASO DE USO RECEBER SOLICIT��O DE INICIO
@@ -78,26 +78,27 @@ public class Controller {
 		otherPlayer.setColor(otherPosition);
 		
 		// CRIAR BOARD + BARALHO + MAPA - O PRIMEIRO JOGADOR CRIA O BARALHO
-		this.board = new Board(this.playerTurn);
+		this.board = new Board(true);
 
 		// COLOCA JOGADOR NO JOGO
 		this.board.setPlayer(player);
 		this.board.setOtherPlayer(otherPlayer);
 		
-		
 		// PRIMEIRO A JOGAR
 		if (this.playerTurn) {
-			// CASO DE USO ESCOLHER OBJETIVOS
-			this.chooseObjectives();
-		}
+			this.chooseObjectives = true;
+		} 
 	}
 
 	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRI��O NA INTERFACE GRAFICA
 	private void chooseObjectives() {
+		if (this.chooseObjectives != true) {
+			return;
+		}
+		this.chooseObjectives = false;
 		// COMPRA 3 CARTAS
 		ObjectiveCard[] objectives = board.buyObjectivies();
 
-		// INFORMA��O DA CARTA PARA PASSAR PARA INTERFACE
 		String[] obj = new String[3];
 		obj[0] = objectives[0].toString();
 		obj[1] = objectives[1].toString();
@@ -121,7 +122,7 @@ public class Controller {
 			}
 		}
 		
-		Action action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
+		this.action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
 
 		// RECEBE M�O INICIAL
 		action.startHand = board.startHand(null);
@@ -129,14 +130,13 @@ public class Controller {
 		// ENVIA PREPARA��O PARA OPONENTE
 		action.deck = board.getDeck();
 		action.objectives = board.getPlayer().getObjectives();
-
-		// CASO DE USO FINALIZAR TURNO
-		this.endTurn(action);
-		
 	}
 	
 	// CASO DE USO COMPRAR OBJETIVO
 	public void drawObjectives() {
+		if (this.action != null) {
+			return;
+		}
 		// COMPRA 3 CARTAS
 		ObjectiveCard[] objectives = board.buyObjectivies();
 
@@ -163,19 +163,19 @@ public class Controller {
 			}
 		}
 
-		// ENVIAR JOGADA
-		Action action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
+		this.action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
 		action.choice = choice;
-		this.endTurn(action);
 	}
 	
 	// CASOU DE USO COMPRAR CARTAS
 	public void drawCards() {
+		if (this.action != null) {
+			return;
+		}
+
 		Action action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());
 		
-		// ESCOLHER COMPRAR DO DECK OU MESA
-		boolean deck = actor.chooseDeckOrBoard();
-		if(deck) {
+		if(true) {
 			// COMPRAR 2 CARTAS DO DECK
 			this.board.buyWagonCard(true);
 			this.board.buyWagonCard(true);
@@ -195,7 +195,7 @@ public class Controller {
 
 			if(!joker) {
 				// ESCOLHER COMPRAR DO DECK OU MESA
-				deck = actor.chooseDeckOrBoard();
+				boolean deck = actor.chooseDeckOrBoard();
 				
 				if(deck) {
 					// COMPRAR 1 CARTA DO DECK
@@ -217,8 +217,6 @@ public class Controller {
 				
 			}
 		}
-		
-		this.endTurn(action);
 	}
 
 	// CASO DE USO CONSTRUIR LINHA
@@ -247,17 +245,21 @@ public class Controller {
 		if (this.board.getPlayer().twoWagons()) {
 			action.lastTurn = true;
 		}
-		this.endTurn(action);
 
 	}
 	
 	
 	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO N�O IMPLEMENTADO
-	public boolean endTurn(Action action) {
+	public boolean endTurn() {
 
 		// ATUALIZAR PROXIMO JOGADOR
 		this.playerTurn = false;
-		return this.netGames.sendAction(action);
+		if (action != null) {
+			this.action = null;
+			return this.netGames.sendAction(this.action);
+		} else {
+			return false;
+		}
 	}
 
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO N�O IMPLEMENTADO
@@ -370,6 +372,15 @@ public class Controller {
 
 	public boolean isConnect() {
 		return connect;
+	}
+
+	public ArrayList<String> getPlayerObjectives() {
+		ArrayList<ObjectiveCard> obj = this.board.getPlayer().getObjectives();
+		ArrayList<String> list = new ArrayList<String>();
+		for (ObjectiveCard card: obj) {
+			list.add(card.toString());
+		}
+		return list;
 	}
 
 }

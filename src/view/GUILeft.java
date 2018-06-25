@@ -16,11 +16,12 @@ public class GUILeft {
     private BorderPane mainLayout;
     private VBox leftLayout;
     private GUIMain main;
+    private ActorPlayer actorPlayer;
 
-    GUILeft(GUIMain main, BorderPane mainLayout, GUIData data) {
+    GUILeft(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
         this.main = main;
         this.mainLayout = mainLayout;
-        this.data = data;
+        this.actorPlayer = actorPlayer;
         this.leftLayout = buildLeft();
     }
 
@@ -139,9 +140,8 @@ public class GUILeft {
     }
 
     private void drawObjectiveHandler() {
-        GUIChooseObjectiveBox chooseObjectiveBox = new GUIChooseObjectiveBox(data);
-        chooseObjectiveBox.display();
-        main.buildLeft(mainLayout);
+    	actorPlayer.drawObjetives();;
+    	main.buildLeft(mainLayout);
     }
 
     private VBox buildObjectives() {
@@ -152,11 +152,16 @@ public class GUILeft {
         Label header = new Label("Objetivos");
 
         objectivesLayout.getChildren().addAll(header, new Separator());
-
-        for (String m : data.getObjectives()) {
-            Label objective = new Label(m);
-            objectivesLayout.getChildren().add(objective);
-        }
+        
+        try {
+        	if (actorPlayer.getPlayerObjectives() != null) {
+        		for (String m : actorPlayer.getPlayerObjectives()) {
+                    Label objective = new Label(m);
+                    objectivesLayout.getChildren().add(objective);
+                }
+        	}
+        } catch (Exception e) {};
+        
 
         objectivesLayout.setAlignment(Pos.CENTER_RIGHT);
         objectivesLayout.setSpacing(10);
