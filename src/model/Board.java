@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 
@@ -58,11 +59,34 @@ public class Board {
 	}
 
 	// MÃO INICIAL - 4 CARTAS
-	public void startHand() {
-		player.addCards(deck.drawWagonCard());
-		player.addCards(deck.drawWagonCard());
-		player.addCards(deck.drawWagonCard());
-		player.addCards(deck.drawWagonCard());
+	public List<WagonCard> startHand(List<WagonCard> list) {
+		Player first = this.otherPlayer;
+		Player second = this.player;
+		if (list == null) {
+			list = new ArrayList<WagonCard>();
+			
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			list.add(deck.drawWagonCard());
+			
+			first = this.player;
+			second = this.otherPlayer;
+		}
+		first.addCards(list.get(0));
+		first.addCards(list.get(1));
+		first.addCards(list.get(2));
+		first.addCards(list.get(3));
+		second.addCards(list.get(4));
+		second.addCards(list.get(5));
+		second.addCards(list.get(6));
+		second.addCards(list.get(7));
+		
+		return list;
 	}
 
 	// ADICIOA OBJETIVOS AO JOGADOR
@@ -82,8 +106,12 @@ public class Board {
 		return this.lastTurn;
 	}
 	
-	public ArrayList<String> getLines() {
+	public ArrayList<String> getLinesInfo() {
 		return this.map.getLinesInfo();
+	}
+	
+	public ArrayList<Line> getLines() {
+		return this.map.getLines();
 	}
 
 	public void addOtherPlayerObjectives(ObjectiveCard objectiveCard) {
@@ -107,10 +135,10 @@ public class Board {
 	}
 
 	public ArrayList<String> getPlayerCards() {
-		return this.player.getCards();
+		return this.player.getCardsInfo();
 	}
 
-	public boolean buildLine(String line, ArrayList<String> cards, boolean player) {
+	public boolean buildLine(int line, int color, boolean player) {
 		Player p;
 		if (player) {
 			p = this.player;
@@ -118,9 +146,24 @@ public class Board {
 			p = this.otherPlayer;
 		}
 		
-		ArrayList<WagonCard> wagonCards = p.getWagonCards(cards);
-		
-		return false;
+		boolean build =  p.addLine(this.getLine(line), color);
+		if (build) {
+			this.getLine(line).setPlayer(p.getName());
+		}
+		return build;
+	}
+	
+	public Line getLine(int line) {
+		Line it = null;
+		for (Line l: this.map.getLines()) {
+			if (l.getId() == line) {
+				it = l;
+			}
+		}
+		return it;
 	}
 
+	public Map getMap() {
+		return this.map;
+	}
 }

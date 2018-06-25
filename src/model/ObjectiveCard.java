@@ -3,7 +3,7 @@ package model;
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class ObjectiveCard implements Jogada {
-	// TO STRING
+
 	private int points;
 	
 	private City cityA;
@@ -41,8 +41,7 @@ public class ObjectiveCard implements Jogada {
 
 	@Override
 	public String toString() {
-		return "points: " + points + " - city " + cityA.getName() + " : city " + cityB.getName();
+		return points + " : " + cityA.getName() + " - " + cityB.getName();
 	}
-
 	
 }

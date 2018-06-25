@@ -18,10 +18,14 @@ public class Controller {
 	
 	// CONTROLE DE TURNO
 	private boolean playerTurn;
-		
+
+	// CONTROLE DE ÚLTIMO TURNO
+	private boolean lastTurn;
+	
 	// MESA - MAPA + BARALHO + JOGADORES - REGRAS DE JOGO
 	private Board board;
 
+	
 	public Controller() {
 		this.actor = new ActorPlayer(this);
 		this.netGames = new ActorNetGames(this);
@@ -81,8 +85,6 @@ public class Controller {
 		
 		// PRIMEIRO A JOGAR
 		if (this.playerTurn) {
-			// RECEBE MÃO INICIAL
-			board.startHand();
 			// CASO DE USO ESCOLHER OBJETIVOS
 			this.chooseObjectives();
 		}
@@ -120,9 +122,12 @@ public class Controller {
 			}
 		}
 		
-
-		// ENVIA PREPARAÇÃO PARA OPONENTE
 		Action action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
+
+		// RECEBE MÃO INICIAL
+		action.startHand = board.startHand(null);
+		
+		// ENVIA PREPARAÇÃO PARA OPONENTE
 		action.deck = board.getDeck();
 		action.objectives = board.getPlayer().getObjectives();
 
@@ -219,40 +224,43 @@ public class Controller {
 
 	// CASO DE USO CONSTRUIR LINHA
 	public void buildLine() {
-		ArrayList<String> lines = this.board.getLines();
-		
-		Action action = new Action(Action.BUILD_LINE, this.board.getPlayer().getName());
-		
-		boolean end = false;
-		boolean build = false;
-		
-		while (end || build) {
-			// ESCOLHER LINHA
-			String line = actor.chooseLine(lines);
+		ArrayList<String> lines = this.board.getLinesInfo();
 
-			// PEGA A INFORMAÇÕES DAS CARTAS DOS JOGADORES
-			ArrayList<String> cardsInfo = this.board.getPlayerCards();
+		// ESCOLHER LINHA
+		int line = actor.chooseLine(lines);
 
-			// ESCOLHE AS CARTAS
-			ArrayList<String> choice = actor.chooseCards(cardsInfo);
-			
-			// CONSTRUIR LINHA SE POSSIVEL
-			// ....... IMPLEMTENTAR ..........................
-			build = this.board.buildLine(line, choice, true);
+		// PEGA A INFORMAÇÕES DAS CARTAS DOS JOGADORES
+		ArrayList<String> cardsInfo = this.board.getPlayerCards();
+
+		// ESCOLHE AS CARTAS
+		int choice = actor.chooseColor(cardsInfo);
+		
+		// CONSTRUIR LINHA SE POSSIVEL
+		boolean build = this.board.buildLine(line, choice, true);
+
+		// ENVIAR JOGADA
+		Action action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
+		if (build) {
+			action.line = line;
 		}
+
+		// ULTIMO TURNO DO PROXIMO JOGADOR
+		if (this.board.getPlayer().twoWagons()) {
+			action.lastTurn = true;
+		}
+		this.endTurn(action);
+
 	}
 	
 	
 	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO NÃO IMPLEMENTADO
 	public boolean endTurn(Action action) {
+
 		// ATUALIZAR PROXIMO JOGADOR
 		this.playerTurn = false;
 		return this.netGames.sendAction(action);
 	}
 
-	
-	
-	
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO NÃO IMPLEMENTADO
 	public void setPlayed(Action action) {
 		switch(action.action) {
@@ -267,7 +275,7 @@ public class Controller {
 				}
 				
 				// RECEBER MÃO INICIAL
-				this.board.startHand();
+				this.board.startHand(action.startHand);
 				break;
 			
 			case Action.BUY_OBJECTIVECARD:
@@ -309,15 +317,39 @@ public class Controller {
 					}
 				}
 		
-				
-		
+			case Action.BUILD_LINE:
+				// CONSTROI LINHA
+				if (action.line >= 0) {
+					this.board.buildLine(action.line, action.color, false);	
+				}
 		}
+		
+		if (action.lastTurn == true) {
+			if (this.lastTurn == true) {
+				// ACABOU O JOGO
+				this.endGame();
+			} else {
+				// OUTRO JOGADOR TEM MAIS UM TURNO
+				this.lastTurn = true;
+			}
+		}
+		
 		
 		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
 
 		// TESTE --- ATUALIZAR TELA 
 		actor.updateInterface();
+	}
+
+	private void endGame() {
+		// CALCULAR PONTUAÇÃO DE CADA JOGADDOR
+		
+		// MOSTRAR PONTUAÇÃO
+		
+		// RESTART
+		this.clear();
+		
 	}
 
 	// CASO DE USO DESCONECTAR

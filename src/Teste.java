@@ -25,6 +25,16 @@ public class Teste {
 		}
 		scan.next();
 	}
-		
+
+	public static void map() {
+		Map m = new Map();
+		int[][] G = m.getMatrizG();
+		for (int[] i: G) {
+			for (int j: i) {
+				System.out.print(j);
+			}
+			System.out.println("");
+		}
+	}
 	
 }

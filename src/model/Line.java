@@ -3,13 +3,15 @@ package model;
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Line implements Jogada {
-	// PRONTO
+
 	private int id;
 
 	private int color;
 
 	private int size;
 
+	private String player;
+	
 	private City cityA;
 
 	private City cityB;
@@ -21,9 +23,6 @@ public class Line implements Jogada {
 		this.size = size;
 		this.cityA = cityA;
 		this.cityB = cityB;
-		
-		this.cityA.addLine(this);
-		this.cityB.addLine(this);
 	}
 	
 	public int getId() {
@@ -45,9 +44,17 @@ public class Line implements Jogada {
 	public City getCityB() {
 		return cityB;
 	}
+	
+	public void setPlayer(String player) {
+		this.player = player;
+	}
+	
+	public String getPlayer() {
+		return this.player;
+	}
 
 	@Override
 	public String toString() {
-		return "Line [id = " + id + ", color = " + color + ", size = " + size + ", city " + cityA.getName() + ", city " + cityB.getName() + "]";
+		return "@" + id + "color = " + color + ", size = " + size + ", city " + cityA.getName() + ", city " + cityB.getName() + "]";
 	}
 }

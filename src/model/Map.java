@@ -8,6 +8,10 @@ public class Map {
 	
 	private ArrayList<City> cities;
 
+	// CALCULAR SE EXITE CAMINHO
+	private int[][] matrizG;
+	private int[] visited;
+	
 	public Map() {
 		lines = new ArrayList<Line>();
 		cities = new ArrayList<City>();
@@ -25,7 +29,9 @@ public class Map {
 	public ArrayList<String> getLinesInfo() {
 		ArrayList<String> lineId = new ArrayList<String>();
 		for (Line it : this.lines) {
-			lineId.add(it.toString());
+			if (it.getPlayer() == null) {
+				lineId.add(it.toString());
+			}
 		}
 		return lineId;
 	}
@@ -184,8 +190,20 @@ public class Map {
 		lines.add(new Line(74, newYork, boston, 2, WagonCard.RED));
 		lines.add(new Line(75, boston, montreal, 2, WagonCard.MULTICOLOR));
 
-		
+		this.createG();
 	}
 	
+	private void createG() {
+		this.matrizG = new int[this.lines.size()][this.cities.size()];
+		for (Line l: this.lines) {
+			matrizG[l.getId()][this.cities.indexOf(l.getCityA())] = 1;
+			matrizG[l.getId()][this.cities.indexOf(l.getCityB())] = 1;
+		}
+	}
+	
+
+	public int[][] getMatrizG() {
+		return this.matrizG;
+	}
 	
 }

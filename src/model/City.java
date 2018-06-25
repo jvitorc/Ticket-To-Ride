@@ -5,34 +5,18 @@ import java.util.ArrayList;
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class City implements Jogada {
-	// PRONTO
 	private String name;
-	
-	private ArrayList<Line> lines;
-	
+		
 	public City(String name) {
 		this.name = name;
-		this.lines = new ArrayList<Line>();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public ArrayList<Line> getLines() {
-		return lines;
-	}
-	
-	protected void addLine(Line line) {
-		lines.add(line);
-	}
-
 	@Override
 	public String toString() {
-		String lines = "";
-		for(Line l: this.lines) {
-			lines +=" " + l.getId(); 
-		}
-		return "City [name: " + name + ", lines: " + lines + "]";
+		return name;
 	}
 }

@@ -83,15 +83,15 @@ public class ActorPlayer {
 	}
 	
 	// CASO DE USO CONTRUIR LINHA -- ....
-	public String chooseLine(ArrayList<String> linesId) {
+	public int chooseLine(ArrayList<String> linesId) {
 		// IMPLEMENTAR
-		return null;
+		return -1;
 	}
 	
 	// CASO DE USO CONSTRUIR LINHA -- ....
-	public ArrayList<String> chooseCards(ArrayList<String> cardsInfo) {
+	public int chooseColor(ArrayList<String> cardsInfo) {
 		// IMPLEMENTAR
-		return null;
+		return 0;
 	}
 
 	
