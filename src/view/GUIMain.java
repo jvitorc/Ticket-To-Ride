@@ -21,6 +21,7 @@ public class GUIMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        data.initPlayers();
         window = primaryStage;
         window.setTitle("Ticket to Ride");
         window.setOnCloseRequest(e -> {
@@ -29,7 +30,6 @@ public class GUIMain extends Application {
         });
 
         Scene mainScene = new Scene(buildMainLayout());
-        mainScene.getStylesheets().add(getClass().getResource("WagonColor.css").toExternalForm());
 
         window.setScene(mainScene);
         window.show();
@@ -38,16 +38,31 @@ public class GUIMain extends Application {
     private BorderPane buildMainLayout() {
         BorderPane mainLayout = new BorderPane();
 
-        bottom = new GUIBottom(data);
-        center = new GUICenter(data);
-        left = new GUILeft(data);
-        top = new GUITop(data, window);
-
-        mainLayout.setTop(top.getTopLayout());
-        mainLayout.setLeft(left.getLeft());
-        mainLayout.setCenter(center.getCenter());
-        mainLayout.setBottom(bottom.getBottom());
+        buildTop(mainLayout);
+        buildLeft(mainLayout);
+        buildBottom(mainLayout);
+        buildCenter(mainLayout);
 
         return mainLayout;
+    }
+
+    private void buildTop(BorderPane mainLayout) {
+        top = new GUITop(this, mainLayout, data, window);
+        mainLayout.setTop(top.getTopLayout());
+    }
+
+    void buildLeft(BorderPane mainLayout) {
+        left = new GUILeft(this, mainLayout, data);
+        mainLayout.setLeft(left.getLeft());
+    }
+
+    void buildBottom(BorderPane mainLayout) {
+        bottom = new GUIBottom(this, mainLayout, data);
+        mainLayout.setBottom(bottom.getBottom());
+    }
+
+    private void buildCenter(BorderPane mainLayout) {
+        center = new GUICenter(data);
+        mainLayout.setCenter(center.getCenter());
     }
 }

@@ -63,6 +63,7 @@ public class GUIData {
     }
 
     private void initList() {
+        // pegar cartas do deck
         this.boardCards.add(0, "1");
         this.boardCards.add(1, "2");
         this.boardCards.add(2, "2");
@@ -71,8 +72,8 @@ public class GUIData {
     }
 
     public void initPlayers() {
-        this.players.add(0, new GUIPlayer("abobora", "azul", 10, 10, 10));
-        this.players.add(1, new GUIPlayer("abacaxi", "vermelho", 10, 10, 10));
+        this.players.add(0, new GUIPlayer("abobora", "blue", 10, 10));
+        this.players.add(1, new GUIPlayer("abacaxi", "red", 10, 10));
     }
 
     public List<String> getRoutes() {
@@ -100,8 +101,7 @@ public class GUIData {
         return objectives;
     }
 
-    public void initObjectives() {
-        this.objectives.add("Califa - São José 10");
-        this.objectives.add("Cansei - Também");
+    public void addObjective(String objective) {
+        objectives.add(objective);
     }
 }

@@ -5,15 +5,21 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 
 public class GUILeft {
 
     private GUIData data;
+    private BorderPane mainLayout;
     private VBox leftLayout;
+    private GUIMain main;
 
-    GUILeft(GUIData data) {
+    GUILeft(GUIMain main, BorderPane mainLayout, GUIData data) {
+        this.main = main;
+        this.mainLayout = mainLayout;
         this.data = data;
         this.leftLayout = buildLeft();
     }
@@ -64,8 +70,9 @@ public class GUILeft {
         Insets boxPadding = new Insets(1, 10, 1,2);
 
         Label card = new Label(cardValue);
+        card.setUserData("");
         Button button = new Button("Comprar " + place);
-        button.setOnAction(e -> drawCardHandler(card.getText()));
+        button.setOnAction(e -> drawCardHandler(card));
 
         cardOption.getChildren().addAll(card, button);
         card.setPadding(labelPadding);
@@ -75,8 +82,44 @@ public class GUILeft {
         return cardOption;
     }
 
-    private void drawCardHandler(String card) {
-        //aumentar contador de cartas compras?
+    private void drawCardHandler(Label card) {
+        // passar a carta para o jogador, atualizar carta nova carta no board
+        switch (card.getText()) {
+            case ("0"):
+                data.getPlayers().get(0).incBlack();
+                break;
+            case ("1"):
+                data.getPlayers().get(0).incBlue();
+                break;
+            case ("2"):
+                data.getPlayers().get(0).incGreen();
+                break;
+            case ("3"):
+                data.getPlayers().get(0).incOrange();
+                break;
+            case ("4"):
+                data.getPlayers().get(0).incPink();
+                break;
+            case ("5"):
+                data.getPlayers().get(0).incRainbow();
+                break;
+            case ("6"):
+                data.getPlayers().get(0).incRed();
+                break;
+            case ("7"):
+                data.getPlayers().get(0).incWhite();
+                break;
+            case ("8"):
+                data.getPlayers().get(0).incYellow();
+                break;
+            default:
+                // pega do monte, carta randomica
+                break;
+        }
+
+        // update board
+        main.buildLeft(mainLayout);
+        main.buildBottom(mainLayout);
     }
 
     private VBox buildObjectiveOption() {
@@ -96,7 +139,9 @@ public class GUILeft {
     }
 
     private void drawObjectiveHandler() {
-
+        GUIChooseObjectiveBox chooseObjectiveBox = new GUIChooseObjectiveBox(data);
+        chooseObjectiveBox.display();
+        main.buildLeft(mainLayout);
     }
 
     private VBox buildObjectives() {
@@ -108,7 +153,6 @@ public class GUILeft {
 
         objectivesLayout.getChildren().addAll(header, new Separator());
 
-        data.initObjectives();
         for (String m : data.getObjectives()) {
             Label objective = new Label(m);
             objectivesLayout.getChildren().add(objective);
