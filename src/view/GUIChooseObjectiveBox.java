@@ -15,12 +15,13 @@ import javafx.stage.Stage;
 public class GUIChooseObjectiveBox {
 
     private static GUIData data;
+    private static boolean[] choice = { false, false, false };
 
     GUIChooseObjectiveBox(GUIData data) {
         GUIChooseObjectiveBox.data = data;
     }
 
-    public static void display() {
+    public static boolean[] display(String[] obj) {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -36,13 +37,11 @@ public class GUIChooseObjectiveBox {
         label.setPadding(new Insets(15));
         label.setText("Escolha os Objetivos");
 
-        // pegar objetivos de uma lista de objetivos, cidades ++ pontos
-
         VBox objectives = new VBox();
 
-        ToggleButton objective1 = new ToggleButton("Califa - São José 10");
-        ToggleButton objective2 = new ToggleButton("Edinburgh - Glasgow 20");
-        ToggleButton objective3 = new ToggleButton("Indaiatuba - Campinas 30");
+        ToggleButton objective1 = new ToggleButton(obj[0]);
+        ToggleButton objective2 = new ToggleButton(obj[1]);
+        ToggleButton objective3 = new ToggleButton(obj[2]);
 
         objective1.setMinWidth(250);
         objective2.setMinWidth(250);
@@ -56,12 +55,15 @@ public class GUIChooseObjectiveBox {
         buttonConfirm.setOnAction(e -> {
             if (objective1.isSelected()) {
                 data.addObjective(objective1.getText());
+                choice[0] = true;
             }
             if (objective2.isSelected()) {
                 data.addObjective(objective2.getText());
+                choice[1] = true;
             }
             if (objective3.isSelected()) {
                 data.addObjective(objective3.getText());
+                choice[2] = true;
             }
             window.close();
         });
@@ -87,5 +89,7 @@ public class GUIChooseObjectiveBox {
 
         window.setScene(new Scene(pane));
         window.showAndWait();
+
+        return choice;
     }
 }

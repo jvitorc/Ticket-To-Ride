@@ -71,19 +71,21 @@ class GUITop {
 
     private void connect() {
         GUIConnect.display();
-        // valores passados para a classe GUIData
     }
 
     private void disconnect() {
-        data.setDisconnect(true);
-        // passar vlaores para desconectar a classe GUIData
+        if (actorPlayer.isConnect()) {
+            actorPlayer.disconnect();
+        }
     }
 
     private void initializeGame() {
-        // todos os player precisam fazer...
-        GUIChooseObjectiveBox chooseObjectiveBox = new GUIChooseObjectiveBox(data);
-        chooseObjectiveBox.display();
-        main.buildLeft(mainLayout);
+
+        if (actorPlayer.startGame()) {
+            GUIMessageBox.display("Alerta", "Jogo iniciado");
+        } else {
+            GUIMessageBox.display("Alerta", "Jogo não iniciado");
+        }
     }
 
     private void openMap() {

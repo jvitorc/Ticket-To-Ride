@@ -90,9 +90,6 @@ public class Controller {
 			// CASO DE USO ESCOLHER OBJETIVOS
 			this.chooseObjectives();
 		}
-		
-		// TESTE
-		actor.showMessage(player.getName() + " : " + player.getColor() + " - Esperar jogador " + otherPlayer.getName() + " : " + otherPlayer.getColor() , ActorPlayer.SUCCESSUFUL);
 	}
 
 	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRI��O NA INTERFACE GRAFICA
@@ -370,6 +367,9 @@ public class Controller {
 		this.board = null;
 		this.playerTurn = false;
 	}
-	// --------------------------
-	
+
+	public boolean isConnect() {
+		return connect;
+	}
+
 }

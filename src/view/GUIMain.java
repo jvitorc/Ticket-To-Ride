@@ -14,6 +14,7 @@ public class GUIMain{
     private GUILeft left;
     private GUITop top;
     private GUIData data = new GUIData();
+    private BorderPane mainLayout;
 
 
     GUIMain(ActorPlayer actorPlayer, Stage primaryStage) {
@@ -38,14 +39,18 @@ public class GUIMain{
     }
 
     private BorderPane buildMainLayout() {
-        BorderPane mainLayout = new BorderPane();
+        this.mainLayout = new BorderPane();
 
-        buildTop(mainLayout);
-        buildLeft(mainLayout);
-        buildBottom(mainLayout);
-        buildCenter(mainLayout);
+        buildTop(this.mainLayout);
+        buildLeft(this.mainLayout);
+        buildBottom(this.mainLayout);
+        buildCenter(this.mainLayout);
 
-        return mainLayout;
+        return this.mainLayout;
+    }
+
+    public BorderPane getMainLayout() {
+        return this.mainLayout;
     }
 
     private void buildTop(BorderPane mainLayout) {

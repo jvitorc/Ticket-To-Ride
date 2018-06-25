@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 public class GUIConnect {
 
+    private static Stage window;
+
     private static ActorPlayer actorPlayer;
 
     public static void setActorPlayer(ActorPlayer actorPlayer) {
@@ -18,7 +20,7 @@ public class GUIConnect {
     }
 
     public static void display() {
-        Stage window = new Stage();
+        window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Conectar");
@@ -63,5 +65,6 @@ public class GUIConnect {
 
     private static void connect(String nameInput, String serverInput) {
         actorPlayer.connect(serverInput, nameInput);
+        window.close();
     }
 }

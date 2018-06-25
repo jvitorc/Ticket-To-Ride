@@ -8,17 +8,11 @@ import javafx.stage.Stage;
 import network.Action;
 
 public class ActorPlayer {
-	// QUANTIDADE DE JOGADORES
 	private static final int QUANTIDADE_JOGADORES = 2;
-
-	// TIPOS DE MENSAGEM
 	public static final int SUCCESSUFUL = 0;
 	public static final int ERRO = 1;
-	
-	// CONTROLADOR
-	private Controller controller;
 
-	// INTERFACE GRAFICA
+	private Controller controller;
 	private GUIMain window;
 	
 	public ActorPlayer(Controller controller, Stage primaryStage) {
@@ -53,9 +47,9 @@ public class ActorPlayer {
 	// CASO DE USO COMPRAR OBJETIVOS - ESCOLHER OBJETIVOS - POSIÇÕES ESCOLHIDA COM VERDADEIRA
 	// ESCOLHER OBJETIVO RESTRIÇÃO ESCOLHER NO MINIMO 2 OBJETIVOS (TRUE)
 	public boolean[] showObjectives(String[] obj, boolean restriction) {
-		// TESTE ----------
-		boolean[] b = {true, true, false};
-		return b;
+		boolean[] choice = GUIChooseObjectiveBox.display(obj);
+		window.buildLeft(window.getMainLayout());
+		return choice;
 	}
 	
 	// CASO DE USO COMPRAR CARTAS
@@ -97,6 +91,10 @@ public class ActorPlayer {
 	public void disconnect() {
 		controller.disconnectGUI();
 		this.showMessage("DESCONECTOU", ActorPlayer.SUCCESSUFUL);
+	}
+
+	public boolean isConnect() {
+		return controller.isConnect();
 	}
 	
 	// ---------------------------------------------------------------------------------------
