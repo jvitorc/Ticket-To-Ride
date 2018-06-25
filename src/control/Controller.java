@@ -15,13 +15,13 @@ public class Controller {
 	private ActorPlayer actor;
 	private ActorNetGames netGames;
 	private boolean start = false;
-
 	private Action action = null;
 	private boolean connect;
 	private boolean playerTurn;
 	private boolean lastTurn;	
 	private Board board;
 	private boolean chooseObjectives;
+	private int drawCards = 0;
 	
 	public Controller(Stage primaryStage) {
 		this.actor = new ActorPlayer(this, primaryStage);
@@ -135,7 +135,9 @@ public class Controller {
 	// CASO DE USO COMPRAR OBJETIVO
 	public void drawObjectives() {
 		if (this.action != null) {
-			return;
+			if (this.action.action != Action.CHOOSE_OBJECTIVE) {
+				return;
+			}
 		}
 		// COMPRA 3 CARTAS
 		ObjectiveCard[] objectives = board.buyObjectivies();
@@ -168,75 +170,46 @@ public class Controller {
 	}
 	
 	// CASOU DE USO COMPRAR CARTAS
-	public void drawCards() {
+	public void drawCards(boolean deck, int choice) {
 		if (this.action != null) {
+			if (action.action != Action.BUY_WAGONCARD) {
+				return;
+			}
+		} else {			
+			this.action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());
+		}
+		
+		if (this.drawCards > 2) {
 			return;
 		}
-
-		Action action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());
 		
-		if(true) {
-			// COMPRAR 2 CARTAS DO DECK
+		if(deck) {
 			this.board.buyWagonCard(true);
-			this.board.buyWagonCard(true);
-			action.buyDeckCard = 2;
+			this.action.buyDeckCard +=1;
+			this.drawCards +=1;
 			
 		} else {
-			// ESCOLHER CARTA DA MESA
-			int choice = actor.chooseCardsBoard(this.board.getDeck().getCardsBoard());
-			
-			// COMPRA CARTA DA MESA
 			this.board.drawBoardCard(choice, true);
-			action.drawBoardCard = new int[2];
-			action.drawBoardCard[0] = choice;
-			action.drawBoardCard[1] = -1;
-			// CARTA DA MESA � UM CORINGA
+			action.drawBoardCard[this.drawCards] = choice;
+			
 			boolean joker = board.getDeck().isJoker(choice);
-
-			if(!joker) {
-				// ESCOLHER COMPRAR DO DECK OU MESA
-				boolean deck = actor.chooseDeckOrBoard();
-				
-				if(deck) {
-					// COMPRAR 1 CARTA DO DECK
-					this.board.buyWagonCard(true);
-					action.buyDeckCard = 1;
-				} else {
-					// ESCOLHER CARTA DA MESA
-					choice = actor.chooseCardsBoard(this.board.getDeck().getCardsBoard());
-					
-					// CARTA DA MESA � UM CORINGA
-					joker = board.getDeck().isJoker(choice);
-
-					if(!joker) {
-						// COMPRA CARTA DA MESA
-						this.board.drawBoardCard(choice, true);						
-						action.drawBoardCard[1] = choice;
-					}
-				}
-				
+			if(joker) {
+				drawCards = 2;
 			}
 		}
 	}
 
 	// CASO DE USO CONSTRUIR LINHA
-	public void buildLine() {
-		ArrayList<String> lines = this.board.getLinesInfo();
-
-		// ESCOLHER LINHA
-		int line = actor.chooseLine(lines);
-
-		// PEGA A INFORMA��ES DAS CARTAS DOS JOGADORES
-		ArrayList<String> cardsInfo = this.board.getPlayerCards();
-
-		// ESCOLHE AS CARTAS
-		int choice = actor.chooseColor(cardsInfo);
+	public void buildLine(int line, int color) {
+		if (action != null) {
+			return;
+		}
 		
 		// CONSTRUIR LINHA SE POSSIVEL
-		boolean build = this.board.buildLine(line, choice, true);
+		boolean build = this.board.buildLine(line, color, true);
 
 		// ENVIAR JOGADA
-		Action action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
+		this.action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
 		if (build) {
 			action.line = line;
 		}
@@ -245,7 +218,6 @@ public class Controller {
 		if (this.board.getPlayer().twoWagons()) {
 			action.lastTurn = true;
 		}
-
 	}
 	
 	
@@ -277,6 +249,7 @@ public class Controller {
 				
 				// RECEBER M�O INICIAL
 				this.board.startHand(action.startHand);
+				this.action = new Action(Action.CHOOSE_OBJECTIVE, this.board.getPlayer().getName());
 				break;
 			
 			case Action.BUY_OBJECTIVECARD:

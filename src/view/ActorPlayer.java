@@ -57,8 +57,8 @@ public class ActorPlayer {
 	}
 	
 	// CASO DE USO COMPRAR CARTAS
-	public void drawCards() {
-		this.controller.drawCards();
+	public void drawCards(boolean deck, int position) {
+		this.controller.drawCards(deck,position);
 	}
 	
 	// CASO DE USO COMPRAR CARTA - ESCOLHER DECK(TRUE) OU MESA 
@@ -74,8 +74,8 @@ public class ActorPlayer {
 	
 
 	// CASO DE USO CONSTRUIR LINHA --- INCOMPLETO
-	public void buildLine() {
-		this.controller.buildLine();
+	public void buildLine(int line, int color) {
+		this.controller.buildLine(line, color);
 	}
 	
 	// CASO DE USO CONTRUIR LINHA -- ....
@@ -110,8 +110,6 @@ public class ActorPlayer {
 	
 	// CASO DE USO RECEBER JOGADA - ATUALIZAR INTERFACE GRAFICA COM A JOGADA RECEBIDA
 	public void updateInterface() {
-		// Teste
-		System.out.println("FIM...");
 	}
 
 	public ArrayList<String> getPlayerObjectives() {

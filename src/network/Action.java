@@ -16,12 +16,13 @@ public class Action implements Jogada {
 	public static final int BUILD_LINE = 1;
 	public static final int BUY_WAGONCARD = 2;
 	public static final int BUY_OBJECTIVECARD = 3;
-		
+	
+	
 	public Action(int action, String player) {
 		this.action = action;
 		this.player = player;
 	}
-	// TIPO DE AÇÃO
+	// TIPO DE Aï¿½ï¿½O
 	public int action;
 	
 	// NOME DO JOGADOR
@@ -33,17 +34,17 @@ public class Action implements Jogada {
 	// OBJETIVOS COMPRADOS
 	public ArrayList<ObjectiveCard> objectives;
 	
-	// CONTROLE ÚLTIMO TURNO
+	// CONTROLE ï¿½LTIMO TURNO
 	public boolean lastTurn;
 	
 	// COMPRAR OBJETIVO
 	public boolean[] choice;
 
 	// QUANTIDADE DE CARTA COMPRADA DO DECK
-	public int buyDeckCard;
+	public int buyDeckCard = 0;
 	
-	// POSIÇÃO DAS CARTAS COMPRADA NA MESA
-	public int[] drawBoardCard;
+	// POSIï¿½ï¿½O DAS CARTAS COMPRADA NA MESA
+	public int[] drawBoardCard = {-1, -1};
 
 	// MAO INICIAL
 	public List<WagonCard> startHand;
