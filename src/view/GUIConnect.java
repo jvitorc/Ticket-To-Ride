@@ -13,6 +13,10 @@ public class GUIConnect {
 
     private static GUIData data;
 
+    public static void setData(GUIData data) {
+        GUIConnect.data = data;
+    }
+
     public static void display() {
         Stage window = new Stage();
 

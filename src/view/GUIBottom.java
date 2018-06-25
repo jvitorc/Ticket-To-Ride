@@ -7,26 +7,31 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GUIBottom {
 
+    private GUIMain main;
+    private BorderPane mainLayout;
     private GUIData data;
     private HBox bottomLayout;
 
-    GUIBottom(GUIData data) {
+    GUIBottom(GUIMain main, BorderPane mainLayout, GUIData data) {
+        this.main = main;
+        this.mainLayout = mainLayout;
         this.data = data;
         this.bottomLayout = buildBottom();
     }
 
     public HBox getBottom() {
-        return bottomLayout;
+        return this.bottomLayout;
     }
 
     private HBox buildBottom() {
-        HBox bottomLayout = new HBox();
+        this.bottomLayout = new HBox();
 
         VBox table = new VBox();
         table.getChildren().addAll(getPlayerTable());
@@ -37,8 +42,8 @@ public class GUIBottom {
         GridPane playerCards = buildPlayerCards();
         VBox endAction = buildEndAction();
 
-        bottomLayout.setAlignment(Pos.CENTER);
-        bottomLayout.getChildren().addAll(table, playerCards, endAction);
+        this.bottomLayout.setAlignment(Pos.CENTER);
+        this.bottomLayout.getChildren().addAll(table, playerCards, endAction);
 
         return bottomLayout;
     }
@@ -68,7 +73,7 @@ public class GUIBottom {
         ObservableList<GUIPlayer> players = FXCollections.observableArrayList();
 
         // pegar jogadores de algum lugar e montar tabela
-        data.initPlayers();
+
         players.addAll(this.data.getPlayers());
 
         return players;
@@ -83,31 +88,31 @@ public class GUIBottom {
         Label header = new Label("Cartas do Jogador");
         GridPane.setConstraints(header,1,0, 5, 1);
 
-        HBox blackCards = buildQttCards("Pretas", 0);
+        HBox blackCards = buildQttCards("Pretas", data.getPlayers().get(0).getBlack());
         GridPane.setConstraints(blackCards, 0,1);
 
-        HBox blueCards = buildQttCards("Azuis", 0);
+        HBox blueCards = buildQttCards("Azuis", data.getPlayers().get(0).getBlue());
         GridPane.setConstraints(blueCards, 0,3);
 
-        HBox greenCards = buildQttCards("Verdes", 0);
+        HBox greenCards = buildQttCards("Verdes", data.getPlayers().get(0).getGreen());
         GridPane.setConstraints(greenCards, 0,5);
 
-        HBox orangeCards = buildQttCards("Laranjas", 0);
+        HBox orangeCards = buildQttCards("Laranjas", data.getPlayers().get(0).getOrange());
         GridPane.setConstraints(orangeCards, 2,1);
 
-        HBox pinkCards = buildQttCards("Rosas", 0);
+        HBox pinkCards = buildQttCards("Rosas", data.getPlayers().get(0).getPink());
         GridPane.setConstraints(pinkCards, 2,3);
 
-        HBox rainbowCards = buildQttCards("Arco-Iris", 0);
+        HBox rainbowCards = buildQttCards("Arco-Iris", data.getPlayers().get(0).getRainbow());
         GridPane.setConstraints(rainbowCards, 2,5);
 
-        HBox redCards = buildQttCards("Vermelhas", 0);
+        HBox redCards = buildQttCards("Vermelhas", data.getPlayers().get(0).getRed());
         GridPane.setConstraints(redCards, 4,1);
 
-        HBox whiteCards = buildQttCards("Brancas", 0);
+        HBox whiteCards = buildQttCards("Brancas", data.getPlayers().get(0).getWhite());
         GridPane.setConstraints(whiteCards, 4,3);
 
-        HBox yellowCards = buildQttCards("Amarelas", 0);
+        HBox yellowCards = buildQttCards("Amarelas", data.getPlayers().get(0).getYellow());
         GridPane.setConstraints(yellowCards, 4,5);
 
         Separator horizontalSeparator1 = new Separator();

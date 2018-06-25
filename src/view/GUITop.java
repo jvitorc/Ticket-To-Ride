@@ -8,19 +8,26 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class GUITop {
+class GUITop {
 
+    private GUIMain main;
+    private BorderPane mainLayout;
     private GUIData data;
     private BorderPane topLayout;
     private Stage window;
+    private Stage map;
 
-    GUITop(GUIData data, Stage window) {
+    GUITop(GUIMain main, BorderPane mainLayout, GUIData data, Stage window) {
+        this.main = main;
+        this.mainLayout = mainLayout;
         this.data = data;
         this.window = window;
         this.topLayout = buildTop();
+        GUIConnect.setData(data);
+
     }
 
-    public BorderPane getTopLayout() {
+    BorderPane getTopLayout() {
         return topLayout;
     }
 
@@ -72,11 +79,14 @@ public class GUITop {
     }
 
     private void initializeGame() {
-
+        // todos os player precisam fazer...
+        GUIChooseObjectiveBox chooseObjectiveBox = new GUIChooseObjectiveBox(data);
+        chooseObjectiveBox.display();
+        main.buildLeft(mainLayout);
     }
 
     private void openMap() {
-        Stage map = new Stage();
+        map = new Stage();
         map.setTitle("Mapa");
 
         Pane pane = new Pane();
@@ -99,6 +109,9 @@ public class GUITop {
 //        if (answer) {
 //            disconnect();
 //            window.close();
+//            try {
+//                map.close();
+//            } catch (NullPointerException e) { System.out.println("mapa nao tava aberto"); }
 //        }
         window.close();
     }
