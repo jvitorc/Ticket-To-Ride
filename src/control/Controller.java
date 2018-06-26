@@ -11,18 +11,18 @@ import view.*;
 
 public class Controller {
 	
-	// ATORES
 	private ActorPlayer actor;
 	private ActorNetGames netGames;
-	private boolean start = false;
-	private Action action = null;
 	private boolean connect;
+	private boolean start = false;
+
+	private int status = -100;
+	private Action action = null;
 	private boolean playerTurn;
 	private boolean lastTurn;	
 	private Board board;
-	private boolean chooseObjectives;
 	private int drawCards = 0;
-	
+
 	public Controller(Stage primaryStage) {
 		this.actor = new ActorPlayer(this, primaryStage);
 		this.netGames = new ActorNetGames(this);
@@ -33,7 +33,7 @@ public class Controller {
 	}
 	
 	public boolean getChooseObjectives() {
-		return this.chooseObjectives;
+		return (this.status == 0);
 	}
 	// CASO DE USO CONECTAR
 	public boolean connect(String server, String name) {
@@ -43,18 +43,17 @@ public class Controller {
 	
 	// CASO DE USO INICIAR PARTIDA
 	public void startGame(int quantity) {
-		start = true;
-		netGames.startGame(quantity);
+		start = netGames.startGame(quantity);
+		actor.showMessage("Conexao: "+ start, 0);
 	}
 	
 	public boolean getStart() {
 		return this.start;
 	}
 
-	// CASO DE USO RECEBER SOLICIT��O DE INICIO
+	// CASO DE USO RECEBER SOLICITACAO DE INICIO
 	public void startNewGame(Integer position) {
 
-		// CALCULAR POSI��O DO OPONENTE
 		int otherPosition;
 		if (position == 1) {
 			otherPosition = 2;
@@ -62,18 +61,15 @@ public class Controller {
 			otherPosition = 1;
 		}
 		
-		// CRIAR JOGADORES - POSI��O
 		Player player = new Player(netGames.getOtherPlayerName(position), position);
 		Player otherPlayer = new Player(netGames.getOtherPlayerName(otherPosition), otherPosition);
 		
-		// VERIFICAR SE � TURNO DO JOGADOR
 		if (position == 1) {
 			this.playerTurn = true;
 		} else {
 			this.playerTurn = false;
 		}
 	
-		// CORES DO JOGADORES - POSI��O INICIAL DECIDE AS CORES
 		player.setColor(position);
 		otherPlayer.setColor(otherPosition);
 		
@@ -84,116 +80,108 @@ public class Controller {
 		this.board.setPlayer(player);
 		this.board.setOtherPlayer(otherPlayer);
 		
-		// PRIMEIRO A JOGAR
 		if (this.playerTurn) {
-			this.chooseObjectives = true;
+			this.status = Action.CHOOSE_OBJECTIVE;
 		} else {
-			this.action = new Action(action.CHOOSE_OBJECTIVE, this.getBoard().getPlayer().getName());
+			this.status = -100;
 		}
 	}
 
 	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRI��O NA INTERFACE GRAFICA
 	public void chooseObjectives() {
-		if (!this.chooseObjectives) {
-			return;
-		} else {
-			this.chooseObjectives = false;
-		}
-		
-		if (this.action != null) {
-			return;
-		}
-		
-		// COMPRA 3 CARTAS
-		ObjectiveCard[] objectives = board.buyObjectivies();
+		if (this.status == Action.CHOOSE_OBJECTIVE) {			
+			this.status = 10;
 
-		String[] obj = new String[3];
-		obj[0] = objectives[0].toString();
-		obj[1] = objectives[1].toString();
-		obj[2] = objectives[2].toString();
-		
-		// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
-		boolean[] choose = actor.showObjectives(obj, true);
+			// COMPRA 3 CARTAS
+			ObjectiveCard[] objectives = board.buyObjectivies();
 	
-		// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
-		for (int i = 0; i < choose.length; i++) {
-			if (choose[i]) {
-				this.board.addPlayerObjectives(objectives[i]);
+			String[] obj = new String[3];
+			obj[0] = objectives[0].toString();
+			obj[1] = objectives[1].toString();
+			obj[2] = objectives[2].toString();
+			
+			// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
+			boolean[] choose = actor.showObjectives(obj, true);
+		
+			// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
+			for (int i = 0; i < choose.length; i++) {
+				if (choose[i]) {
+					this.board.addPlayerObjectives(objectives[i]);
+				}
 			}
-		}
-		
-		// OBJETIVOS N�O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
-		for (int i = 0; i < choose.length; i++) {
-			if (!choose[i]) {
-				this.board.addObjectives(objectives[i]);
+			
+			// OBJETIVOS NAO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+			for (int i = 0; i < choose.length; i++) {
+				if (!choose[i]) {
+					this.board.addObjectives(objectives[i]);
+				}
 			}
+			
+			this.action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
+	
+			// RECEBE MAO INICIAL
+			action.startHand = board.startHand(null);
+			
+			// ENVIA PREPARACAOO PARA OPONENTE
+			action.deck = board.getDeck();
+			action.objectives = board.getPlayer().getObjectives();
+			this.endTurn();
 		}
-		
-		this.action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
-
-		// RECEBE M�O INICIAL
-		action.startHand = board.startHand(null);
-		
-		// ENVIA PREPARA��O PARA OPONENTE
-		action.deck = board.getDeck();
-		action.objectives = board.getPlayer().getObjectives();
 	}
 	
 	// CASO DE USO COMPRAR OBJETIVO
 	public void drawObjectives() {
-		if (this.action != null) {
-			if (!(this.action.action == Action.CHOOSE_OBJECTIVE)) {
-				return;
+		if (this.status == -1 || this.status == 20) {
+			this.status = -100;
+			// COMPRA 3 CARTAS
+			ObjectiveCard[] objectives = board.buyObjectivies();
+	
+			// INFORMACAO DA CARTA PARA PASSAR PARA INTERFACE
+			String[] obj = new String[3];
+			obj[0] = objectives[0].toString();
+			obj[1] = objectives[1].toString();
+			obj[2] = objectives[2].toString();
+			
+			// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
+			boolean[] choice = actor.showObjectives(obj, false);
+			
+			// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
+			for (int i = 0; i < choice.length; i++) {
+				if (choice[i] == true) {
+					this.board.addPlayerObjectives(objectives[i]);
+				}
 			}
-		}
-		// COMPRA 3 CARTAS
-		ObjectiveCard[] objectives = board.buyObjectivies();
-
-		// INFORMA��O DA CARTA PARA PASSAR PARA INTERFACE
-		String[] obj = new String[3];
-		obj[0] = objectives[0].toString();
-		obj[1] = objectives[1].toString();
-		obj[2] = objectives[2].toString();
-		
-		// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
-		boolean[] choice = actor.showObjectives(obj, false);
-		
-		// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
-		for (int i = 0; i < choice.length; i++) {
-			if (choice[i] == true) {
-				this.board.addPlayerObjectives(objectives[i]);
+			
+			// OBJETIVOS NAO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+			for (int i = 0; i < choice.length; i++) {
+				if (choice[i] == false) {
+					this.board.addObjectives(objectives[i]);
+				}
 			}
+	
+			this.action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
+			action.choice = choice;
+			this.endTurn();
 		}
-		
-		// OBJETIVOS N�O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
-		for (int i = 0; i < choice.length; i++) {
-			if (choice[i] == true) {
-				this.board.addObjectives(objectives[i]);
-			}
-		}
-
-		this.action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
-		action.choice = choice;
 	}
 	
 	// CASOU DE USO COMPRAR CARTAS
 	public void drawCards(boolean deck, int choice) {
-		if (this.action != null) {
-			if (action.action != Action.BUY_WAGONCARD) {
-				return;
-			}
-		} else {			
-			this.action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());
+		if (status == -1) {
+			this.action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());				
+			this.drawCards = 0;
+			this.status = 30;
+			this.drawCardBoard(deck, choice);
+		} else if (status == 30) {
+			this.status = 10;
+			this.drawCardBoard(deck, choice);
 		}
-		
-		if (this.drawCards > 2) {
-			return;
-		}
-		
+	}
+	
+	private void drawCardBoard(boolean deck, int choice) {
 		if(deck) {
 			this.board.buyWagonCard(true);
 			this.action.buyDeckCard +=1;
-			this.drawCards +=1;
 			
 		} else {
 			this.board.drawBoardCard(choice, true);
@@ -201,44 +189,41 @@ public class Controller {
 			
 			boolean joker = board.getDeck().isJoker(choice);
 			if(joker) {
-				drawCards = 2;
+				this.status = 10;
 			}
 		}
+		
 	}
 
 	// CASO DE USO CONSTRUIR LINHA
 	public void buildLine(int line, int color) {
-		if (action != null) {
-			return;
-		}
-		
-		// CONSTRUIR LINHA SE POSSIVEL
-		boolean build = this.board.buildLine(line, color, true);
-
-		// ENVIAR JOGADA
-		this.action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
-		if (build) {
-			action.line = line;
-		}
-
-		// ULTIMO TURNO DO PROXIMO JOGADOR
-		if (this.board.getPlayer().twoWagons()) {
-			action.lastTurn = true;
+		if (status == -1) {
+			// CONSTRUIR LINHA SE POSSIVEL
+			boolean build = this.board.buildLine(line, color, true);
+	
+			// ENVIAR JOGADA
+			this.action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
+			if (build) {
+				action.line = line;
+			}
+	
+			// ULTIMO TURNO DO PROXIMO JOGADOR
+			if (this.board.getPlayer().twoWagons()) {
+				action.lastTurn = true;
+			}
+			this.status = -100;
+			this.endTurn();
 		}
 	}
 	
 	
 	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO N�O IMPLEMENTADO
-	public boolean endTurn() {
-
-		// ATUALIZAR PROXIMO JOGADOR
-		this.playerTurn = false;
-		if (action != null) {
-			this.action = null;
-			return this.netGames.sendAction(this.action);
-		} else {
-			return false;
-		}
+	public void endTurn() {
+		if (status == 10) {
+			this.playerTurn = false;
+			this.netGames.sendAction(this.action);
+			actor.showMessage("Turno do oponente", ActorPlayer.SUCCESSUFUL);
+		} 
 	}
 
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO N�O IMPLEMENTADO
@@ -250,13 +235,14 @@ public class Controller {
 				this.board.setDeck(action.deck);		
 				
 				// ADICIONAR OBJETIVOS AO OUTRO JOGADOR
-				for (int i = 0; i < action.objectives.size(); i++) {
-					this.board.getOtherPlayer().addObjectives(action.objectives.remove(0));
+				for (ObjectiveCard ob: action.objectives) {
+					this.board.getOtherPlayer().addObjectives(ob);
 				}
 				
-				// RECEBER M�O INICIAL
+				// RECEBER MAO INICIAL
 				this.board.startHand(action.startHand);
-				this.action = new Action(Action.BUY_OBJECTIVECARD, this.board.getPlayer().getName());
+				this.status = 20;
+				System.out.println("sdasda");
 				break;
 			
 			case Action.BUY_OBJECTIVECARD:
@@ -273,36 +259,32 @@ public class Controller {
 					}
 				}
 				
-				// OBJETIVOS N�O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+				// OBJETIVOS NAO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
 				for (int i = 0; i < choice.length; i++) {
-					if (choice[i] == true) {
+					if (choice[i] == false) {
 						this.board.addObjectives(objectives[i]);
 					}
 				}
+				this.status = -1;
 				break;
 			
 			case Action.BUY_WAGONCARD:
-				// VERIFICA SE COMPROU DUAS CARTAS DO DECK
-				if (action.buyDeckCard == 2) {
-					this.board.buyWagonCard(false);
-					this.board.buyWagonCard(false);
-				} else {
-					// 	COMPROU 1 CARTA DO DECK
-					this.board.drawBoardCard(action.drawBoardCard[0], false);
-					// PODE TER COMPRADO 1 CARTA DO DECK
-					if (action.buyDeckCard == 1) {
-						this.board.buyWagonCard(false);
-					} else {
-						// PODE TER COMPRADO 1 CARTA DA MESA
-						this.board.drawBoardCard(action.drawBoardCard[1], false);
-					}
+				for (int i: action.drawBoardCard) {
+					if (i == -1) {
+						if (action.buyDeckCard > 0) {
+							this.board.buyWagonCard(false);
+							action.buyDeckCard--;
+						}
+					} else {						
+						this.board.drawBoardCard(action.drawBoardCard[0], false);
+					}	
 				}
-		
+				this.status = -1;
 			case Action.BUILD_LINE:
-				// CONSTROI LINHA
 				if (action.line >= 0) {
 					this.board.buildLine(action.line, action.color, false);	
 				}
+				this.status = -1;
 		}
 		
 		if (action.lastTurn == true) {

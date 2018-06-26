@@ -30,7 +30,7 @@ public class ActorPlayer {
 		if (connect) {
 			this.showMessage("Conectou", ActorPlayer.SUCCESSUFUL);
 		} else {
-			this.showMessage("N�o conectou", ActorPlayer.ERRO);
+			this.showMessage("Nao conectou", ActorPlayer.ERRO);
 		}
 		
 		return connect;
@@ -63,34 +63,10 @@ public class ActorPlayer {
 	public void drawCards(boolean deck, int position) {
 		this.controller.drawCards(deck,position);
 	}
-	
-	// CASO DE USO COMPRAR CARTA - ESCOLHER DECK(TRUE) OU MESA 
-	public boolean chooseDeckOrBoard() {
-		
-		return false;
-	}
-	
-	// CASO DE USO COMPRAR CARTA - 1 CARTA DA MESA - RETORNAR POSI��O ESCOLHIDA 
-	public int chooseCardsBoard(String[] cardsBoard) {
-		return 0;
-	}
-	
 
-	// CASO DE USO CONSTRUIR LINHA --- INCOMPLETO
+	// CASO DE USO CONSTRUIR LINHA
 	public void buildLine(int line, int color) {
 		this.controller.buildLine(line, color);
-	}
-	
-	// CASO DE USO CONTRUIR LINHA -- ....
-	public int chooseLine(ArrayList<String> linesId) {
-		// IMPLEMENTAR
-		return -1;
-	}
-	
-	// CASO DE USO CONSTRUIR LINHA -- ....
-	public int chooseColor(ArrayList<String> cardsInfo) {
-		// IMPLEMENTAR
-		return 0;
 	}
 
 	
