@@ -70,8 +70,8 @@ public class Deck implements Jogada {
 	}
 
 
-	public String[] getCardsBoard() {
-		String[] cards = {cardsBoard[0].toString(), cardsBoard[1].toString(), cardsBoard[2].toString(), cardsBoard[3].toString(), cardsBoard[4].toString()};
+	public WagonCard[] getCardsBoard() {
+		WagonCard[] cards = {cardsBoard[0], cardsBoard[1], cardsBoard[2], cardsBoard[3], cardsBoard[4]};
 		return cards;
 	}
 

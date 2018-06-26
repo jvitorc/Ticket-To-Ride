@@ -215,4 +215,8 @@ public class ActorPlayer {
 	public void refreshGUI() {
 		this.window = new GUIMain(this, primaryStage);
 	}
+	
+	public String getColorName(int color) {
+		return controller.getColorName(color);
+	}
 }

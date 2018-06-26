@@ -197,6 +197,7 @@ public class GUIBottom {
 
     private void endActionHandler() {
     	actorPlayer.endTurn();
+    	actorPlayer.refreshGUI();
     }
     
     private StackPane buildLabelTurn() {

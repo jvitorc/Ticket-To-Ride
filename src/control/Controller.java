@@ -393,5 +393,10 @@ public class Controller {
 	public boolean getMapReady() {
 		return board.getMapReady();
 	}
+	
+	public String getColorName(int color) {
+		WagonCard cardName = new WagonCard(color);
+		return cardName.getColorName();
+	}
 
 }

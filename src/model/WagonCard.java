@@ -32,6 +32,40 @@ public class WagonCard implements Jogada {
 	public String toString() {
 		return color + "";
 	}
+	
+	public String getColorName() {
+		String colorName;
+		switch(this.color) {
+		case 0:
+			colorName = "black";
+			break;
+		case 1:
+			colorName = "blue";
+			break;
+		case 2:
+			colorName = "green";
+			break;
+		case 3:
+			colorName = "orange";
+			break;
+		case 4:
+			colorName = "purple";
+			break;
+		case 5:
+			colorName = "multicolor";
+			break;
+		case 6:
+			colorName = "red";
+			break;
+		case 7:
+			colorName = "white";
+			break;
+		default:
+			colorName = "yellow";
+			break;
+		}
+		return colorName;
+	}
 
 	
 }

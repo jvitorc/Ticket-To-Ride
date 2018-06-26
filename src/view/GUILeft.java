@@ -80,8 +80,18 @@ public class GUILeft {
 
         Insets labelPadding = new Insets(10);
         Insets boxPadding = new Insets(1, 10, 1,2);
-
-        Label card = new Label("?");
+        Label card = new Label("");
+        if (!deck) {
+        	try {
+	        	if (actorPlayer.getBoard().getDeck().getCardsBoard()[position] != null) {
+	        		card = new Label(actorPlayer.getColorName(actorPlayer.getBoard().getDeck().getCardsBoard()[position].getColor()));
+	        	}
+        	} catch (Exception e) {
+        		card = new Label("");
+        	}
+        } else {
+        	card = new Label("");
+        }
         card.setUserData("");
         Button button = new Button("Comprar " + place);
         button.setOnAction(e -> drawCardHandler(position, place, deck));
@@ -90,6 +100,7 @@ public class GUILeft {
         card.setPadding(labelPadding);
         cardOption.setAlignment(Pos.CENTER_RIGHT);
         cardOption.setPadding(boxPadding);
+        cardOption.setMinWidth(230);
 
         return cardOption;
     }
@@ -98,6 +109,7 @@ public class GUILeft {
         // passar a carta para o jogador, atualizar carta nova carta no board
     	
     	actorPlayer.drawCards(deck, position);
+    	actorPlayer.refreshGUI();
         //main.buildCenter(mainLayout);
     }
 
@@ -122,7 +134,8 @@ public class GUILeft {
     		actorPlayer.chooseObjectives();
     	} else {
     		actorPlayer.drawObjetives();
-    	}		
+    	}
+    	actorPlayer.refreshGUI();
     }
 
     private VBox buildObjectives() {
