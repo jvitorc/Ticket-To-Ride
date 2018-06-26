@@ -80,14 +80,7 @@ class GUITop {
     }
 
     private void initializeGame() {
-    	
     	actorPlayer.startGame();
-
-        if (actorPlayer.getStart()) {
-            GUIMessageBox.display("Alerta", "Jogo iniciado");
-        } else {
-            GUIMessageBox.display("Alerta", "Jogo não iniciado");
-        }
     }
 
     private void openMap() {

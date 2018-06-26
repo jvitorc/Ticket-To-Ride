@@ -131,37 +131,39 @@ public class Controller {
 	
 	// CASO DE USO COMPRAR OBJETIVO
 	public void drawObjectives() {
-		if (this.status == -1 || this.status == 20) {
-			this.status = -100;
-			// COMPRA 3 CARTAS
-			ObjectiveCard[] objectives = board.buyObjectivies();
-	
-			// INFORMACAO DA CARTA PARA PASSAR PARA INTERFACE
-			String[] obj = new String[3];
-			obj[0] = objectives[0].toString();
-			obj[1] = objectives[1].toString();
-			obj[2] = objectives[2].toString();
-			
-			// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
-			boolean[] choice = actor.showObjectives(obj, false);
-			
-			// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
-			for (int i = 0; i < choice.length; i++) {
-				if (choice[i] == true) {
-					this.board.addPlayerObjectives(objectives[i]);
+		if (this.playerTurn) {
+			if (this.status == -1 || this.status == Action.BUY_OBJECTIVECARD) {
+				this.status = -100;
+				// COMPRA 3 CARTAS
+				ObjectiveCard[] objectives = board.buyObjectivies();
+		
+				// INFORMACAO DA CARTA PARA PASSAR PARA INTERFACE
+				String[] obj = new String[3];
+				obj[0] = objectives[0].toString();
+				obj[1] = objectives[1].toString();
+				obj[2] = objectives[2].toString();
+				
+				// CHAMA  INTERFACE GRAFICA, RECEBE OBJETIVOS ESCOLHIDOS
+				boolean[] choice = actor.showObjectives(obj, false);
+				
+				// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
+				for (int i = 0; i < choice.length; i++) {
+					if (choice[i] == true) {
+						this.board.addPlayerObjectives(objectives[i]);
+					}
 				}
-			}
-			
-			// OBJETIVOS NAO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
-			for (int i = 0; i < choice.length; i++) {
-				if (choice[i] == false) {
-					this.board.addObjectives(objectives[i]);
+				
+				// OBJETIVOS NAO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+				for (int i = 0; i < choice.length; i++) {
+					if (choice[i] == false) {
+						this.board.addObjectives(objectives[i]);
+					}
 				}
+		
+				this.action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
+				action.choice = choice;
+				this.endTurn();
 			}
-	
-			this.action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
-			action.choice = choice;
-			this.endTurn();
 		}
 	}
 	
@@ -241,7 +243,7 @@ public class Controller {
 				
 				// RECEBER MAO INICIAL
 				this.board.startHand(action.startHand);
-				this.status = 20;
+				this.status = Action.BUY_OBJECTIVECARD;
 				System.out.println("sdasda");
 				break;
 			

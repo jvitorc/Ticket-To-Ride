@@ -15,6 +15,8 @@ public class Player {
 	private int wagons = 45;
 	private int points = 0; 
 	
+	int[] cardsColor = new int[8];
+	
 	private ArrayList<ObjectiveCard> objectives = new ArrayList<ObjectiveCard>();
 	private ArrayList<WagonCard> cards = new ArrayList<WagonCard>();
 	private ArrayList<Line> lines = new ArrayList<Line>();
@@ -26,6 +28,10 @@ public class Player {
 
 	public String getName() {
 		return name;
+	}
+	
+	public int[] getcardsList() {
+		return cardsColor;
 	}
 
 	public String getColor() {
@@ -73,6 +79,7 @@ public class Player {
 	
 	public void addCards(WagonCard card) {
 		cards.add(card);
+		this.cardsColor[card.getColor()] += 1;
 	}
 
 	public ArrayList<String> getCardsInfo() {
@@ -92,9 +99,9 @@ public class Player {
 	}
 	
 	public boolean addLine(Line line, int color) {
-		// TESTA SE TEM VAGÃO
+		// TESTA SE TEM VAGï¿½O
 		if (line.getSize() < this.wagons ) {
-			// TESTE SE COR E LINHA SÃO DO TIPO CERTO
+			// TESTE SE COR E LINHA Sï¿½O DO TIPO CERTO
 			boolean b1 = line.getColor() == WagonCard.MULTICOLOR;
 			boolean b2 = color == WagonCard.MULTICOLOR;
 			boolean b3 = line.getColor() == color;
@@ -111,14 +118,15 @@ public class Player {
 					}
 				}
 				
-				// SE TEM CARTAS E VAGÕES ADD LINE
+				// SE TEM CARTAS E VAGï¿½ES ADD LINE
 				if (list.size() == line.getSize()) {
 					for (WagonCard c: list) {
 						this.cards.remove(c);
+						this.cardsColor[c.getColor()] -= 1;
 					}
 					this.wagons -=  line.getSize();
 					this.lines.add(line);
-					// ATUALIZAR PONTUAÇÃO
+					// ATUALIZAR PONTUAï¿½ï¿½O
 					this.updateLinePoints(line.getSize());
 					return true;
 				}

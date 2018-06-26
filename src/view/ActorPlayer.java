@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import model.Board;
 import model.Line;
 import model.Player;
+import model.WagonCard;
 import network.Action;
 
 public class ActorPlayer {
@@ -201,7 +202,7 @@ public class ActorPlayer {
 		return controller.getPlayerTurn();
 	}
 	
-	public boolean endTurn() {
-		return controller.endTurn();
+	public void endTurn() {
+		 controller.endTurn();
 	}
 }
