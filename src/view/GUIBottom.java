@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import model.Line;
 import model.Player;
@@ -39,12 +40,13 @@ public class GUIBottom {
     private HBox buildBottom() {
         this.bottomLayout = new HBox();
         
-        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
         try {
         	if (actorPlayer.getGUIPlayers() != null) {
         		this.guiPlayers = actorPlayer.getGUIPlayers();
         	}
-        } catch (Exception e ) { }
+        } catch (Exception e ) {
+        	this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        }
 
         VBox table = new VBox();
         table.getChildren().addAll(getPlayerTable());
@@ -56,7 +58,7 @@ public class GUIBottom {
         VBox endAction = buildEndAction();
 
         this.bottomLayout.setAlignment(Pos.CENTER);
-        this.bottomLayout.getChildren().addAll(table, playerCards, endAction);
+        this.bottomLayout.getChildren().addAll(buildRefreshButton(), table, playerCards, endAction, buildLabelTurn());
 
         return bottomLayout;
     }
@@ -84,8 +86,6 @@ public class GUIBottom {
 
     private ObservableList<GUIPlayer> getPlayer() {
         ObservableList<GUIPlayer> players = FXCollections.observableArrayList();
-
-        // pegar jogadores de algum lugar e montar tabela
         
         players.addAll(guiPlayers);
 
@@ -182,7 +182,7 @@ public class GUIBottom {
         Insets boxPadding = new Insets(0, 0 ,10 ,0);
         Insets buttonPadding = new Insets(30);
 
-        Button button = new Button("Finalizar AÃ§Ã£o");
+        Button button = new Button("Finalizar Ação");
         button.setOnAction(e -> endActionHandler());
         button.setPadding(buttonPadding);
         button.setAlignment(Pos.CENTER);
@@ -199,7 +199,10 @@ public class GUIBottom {
     	actorPlayer.endTurn();
     }
     
-    private Label buildLabelTurn() {
+    private StackPane buildLabelTurn() {
+    	
+    	StackPane pane = new StackPane();
+    	pane.setPadding(new Insets(10, 20, 10, 20));
     	Label label;
     	
     	if (actorPlayer.getPlayerTurn()) {
@@ -208,7 +211,23 @@ public class GUIBottom {
     		label = new Label("Turno do Outro");
     	}
     	
-    	return label;
+    	label.setAlignment(Pos.CENTER);
+    	pane.getChildren().add(label);
+    	
+    	return pane;
+    }
+    
+    private StackPane buildRefreshButton() {
+    	
+    	StackPane pane = new StackPane();
+    	pane.setPadding(new Insets(10, 20, 10, 20));
+    	Button button = new Button("Atualiza GUI");
+    	
+    	button.setOnAction(e -> actorPlayer.refreshGUI());
+    	button.setPadding(new Insets(20));
+    	pane.getChildren().add(button);
+    	
+    	return pane;
     }
     
     

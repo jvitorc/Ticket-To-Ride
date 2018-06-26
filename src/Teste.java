@@ -27,11 +27,14 @@ public class Teste {
 	}
 
 	public static void map() {
-		Board b = new Board(true);
-		for (ObjectiveCard ob: b.getDeck().getObjectives()) {
-			System.out.println(ob);
+		Map m = new Map();
+		int[][] G = m.getMatrizG();
+		for (int[] i: G) {
+			for (int j: i) {
+				System.out.print(j);
+			}
+			System.out.println("");
 		}
-		
 	}
 	
 }

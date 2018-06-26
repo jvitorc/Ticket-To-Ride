@@ -35,12 +35,13 @@ public class GUILeft {
     private VBox buildLeft() {
         VBox leftLayout = new VBox();
         
-        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
         try {
         	if (actorPlayer.getGUIPlayers() != null) {
         		this.guiPlayers = actorPlayer.getGUIPlayers();
         	}
-        } catch (Exception e ) { }
+        } catch (Exception e ) {
+        	this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        }
 
         VBox cardOption = buildCardOptions();
         cardOption.setAlignment(Pos.TOP_CENTER);
@@ -97,9 +98,6 @@ public class GUILeft {
         // passar a carta para o jogador, atualizar carta nova carta no board
     	
     	actorPlayer.drawCards(deck, position);
-    
-        main.buildLeft(mainLayout);
-        main.buildBottom(mainLayout);
         //main.buildCenter(mainLayout);
     }
 
@@ -124,10 +122,7 @@ public class GUILeft {
     		actorPlayer.chooseObjectives();
     	} else {
     		actorPlayer.drawObjetives();
-    	}
-    	main.buildLeft(mainLayout);
-    	main.buildBottom(mainLayout);
-        main.buildCenter(mainLayout); 		
+    	}		
     }
 
     private VBox buildObjectives() {

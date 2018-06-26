@@ -57,7 +57,6 @@ public class ActorPlayer {
 	// ESCOLHER OBJETIVO RESTRI��O ESCOLHER NO MINIMO 2 OBJETIVOS (TRUE)
 	public boolean[] showObjectives(String[] obj, boolean restriction) {
 		GUIChooseObjectiveBox.display(obj);
-		System.out.println("aqui");
 		boolean[] choice = GUIChooseObjectiveBox.getChoice();
 		window.buildLeft(window.getMainLayout());
 		return choice;

@@ -84,8 +84,7 @@ class GUITop {
 
         if (actorPlayer.getStart()) {
             GUIMessageBox.display("Alerta", "Jogo iniciado");
-            main.buildBottom(mainLayout);
-            main.buildCenter(mainLayout);
+            actorPlayer.refreshGUI();
         } else {
             GUIMessageBox.display("Alerta", "Jogo não iniciado");
         }

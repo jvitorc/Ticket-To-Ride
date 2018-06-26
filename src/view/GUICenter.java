@@ -37,12 +37,14 @@ public class GUICenter {
         Pane centerLayout = new Pane();
         centerLayout.getStylesheets().add(getClass().getResource("WagonColor.css").toExternalForm());
 
-        this.lines = actorPlayer.getDummyArray();
+        
         try {
         	if (actorPlayer.getBoard().getLines() != null) {
         		this.lines = actorPlayer.getBoard().getLines();
         	}
-        } catch (Exception e ) { }
+        } catch (Exception e ) { 
+        	this.lines = actorPlayer.getDummyArray();
+        }
         
        //System.out.println(x);
         GridPane routes = buildCenterGrid();
@@ -65,18 +67,12 @@ public class GUICenter {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 13; j ++) {
             	ToggleButton route = buildConstructOption(this.lines.get((j)+(i*13)).toString2());
-            	try {
-	            	if (!this.lines.get((j)+(i*13)).getPlayer().equals(null)) {
-	            		guiLine = new GUILine(true, (j)+(i*13), this.lines.get((j)+(i*13)).getColor());
-	            		if ((actorPlayer.getGUIPlayers().get(0).getName()).equals(this.lines.get((j)+(i*13)).getPlayer().getName())) {
-	            			guiLine.setOwner(actorPlayer.getGUIPlayers().get(0));
-	            		} else {
-	            			guiLine.setOwner(actorPlayer.getGUIPlayers().get(1));
-	            		}
-	            		route.getStyleClass().add(guiLine.getOwner().getColor());
-	            		route.setUserData(guiLine);
-	            	}
-            	} catch (Exception e) {
+            	if ((this.lines.get((j)+(i*13)).getPlayer() != null)) {
+            		guiLine = new GUILine(true, (j)+(i*13), this.lines.get((j)+(i*13)).getColor());
+            		guiLine.setOwner(actorPlayer.setGUIPlayer(this.lines.get((j)+(i*13)).getPlayer()));
+            		route.getStyleClass().add(guiLine.getOwner().getColor());
+            		route.setUserData(guiLine);
+            	} else {
             		route.setUserData(new GUILine(false, (j)+(i*13), this.lines.get((j)+(i*13)).getColor()));
             	}
                 route.setToggleGroup(routeGroup);
@@ -110,9 +106,7 @@ public class GUICenter {
         GUILine lineData = ((GUILine) group.getSelectedToggle().getUserData());
 
         try {
-        	boolean consumed = lineData.getConsumed();
-
-            if (!consumed) {
+            if (!lineData.getConsumed()) {
                 actorPlayer.buildLine(lineData.getLineIndex(), lineData.getColor());
                 consumeRoute(lineData, group, actorPlayer.getGUIPlayers().get(0));
             } else {

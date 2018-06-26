@@ -84,7 +84,7 @@ public class GUIPlayer {
     }
 
     public int getQttCards() {
-        return qttCards;
+        return qttCards/2;
     }
 
     public void setQttCards(int qttCards) {

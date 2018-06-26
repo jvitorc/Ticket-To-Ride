@@ -17,7 +17,7 @@ public class Deck implements Jogada {
 		
 	public Deck(ArrayList<City> cities) {
 				
-		// Objetivos
+		// OBJETIVOS
 		this.objectives = new ArrayList<ObjectiveCard>();
 		for (int i = 5; i <= 30; i+=5) {
 			this.objectives.add(new ObjectiveCard(1 ,cities.get(i), cities.get(i+1)));

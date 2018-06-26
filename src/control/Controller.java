@@ -174,6 +174,7 @@ public class Controller {
 			this.drawCards = 0;
 			this.status = 30;
 			this.drawCardBoard(deck, choice);
+			this.drawCards += 1;
 		} else if (status == 30) {
 			this.status = 10;
 			this.drawCardBoard(deck, choice);
@@ -232,13 +233,13 @@ public class Controller {
 
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO N�O IMPLEMENTADO
 	public void setPlayed(Action action) {
-
-		switch(action.action) {
 		
+		switch(action.action) {
 			case Action.CHOOSE_OBJECTIVE:
 				// RECEBER DECK
 				this.board.setDeck(action.deck);		
 				
+				// ADICIONAR OBJETIVOS AO OUTRO JOGADOR
 				ObjectiveCard[] objectives = board.buyObjectivies();
 				
 				// RECEBER ESCOLHAS
@@ -320,8 +321,9 @@ public class Controller {
 		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
 
+		// teste
+		
 		// TESTE --- ATUALIZAR TELA 
-		actor.refreshGUI();
 	}
 
 	private void endGame() {
