@@ -124,7 +124,7 @@ public class Controller {
 			
 			// ENVIA PREPARACAOO PARA OPONENTE
 			action.deck = board.getDeck();
-			action.objectives = board.getPlayer().getObjectives();
+			action.choice = choose;
 			this.endTurn();
 		}
 	}
@@ -232,28 +232,13 @@ public class Controller {
 
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO N�O IMPLEMENTADO
 	public void setPlayed(Action action) {
-		
-		
-		
+
 		switch(action.action) {
 		
 			case Action.CHOOSE_OBJECTIVE:
 				// RECEBER DECK
 				this.board.setDeck(action.deck);		
 				
-				// ADICIONAR OBJETIVOS AO OUTRO JOGADOR
-				for (ObjectiveCard ob: action.objectives) {
-					this.board.getOtherPlayer().addObjectives(ob);
-				}
-				
-				// RECEBER MAO INICIAL
-				this.board.startHand(action.startHand);
-				this.status = 20;
-				System.out.println("sdasda");
-				break;
-			
-			case Action.BUY_OBJECTIVECARD:
-				// COMPRA 3 CARTAS
 				ObjectiveCard[] objectives = board.buyObjectivies();
 				
 				// RECEBER ESCOLHAS
@@ -270,6 +255,33 @@ public class Controller {
 				for (int i = 0; i < choice.length; i++) {
 					if (choice[i] == false) {
 						this.board.addObjectives(objectives[i]);
+					}
+				}
+				
+				// RECEBER MAO INICIAL
+				this.board.startHand(action.startHand);
+				this.status = 20;
+				System.out.println("sdasda");
+				break;
+			
+			case Action.BUY_OBJECTIVECARD:
+				// COMPRA 3 CARTAS
+				ObjectiveCard[] objectives1 = board.buyObjectivies();
+				
+				// RECEBER ESCOLHAS
+				boolean[] choice1 = action.choice;
+
+				// ADICIONA OS OBJETIVOS ESCOLHIDOS AO OUTRO JOGADOR
+				for (int i = 0; i < choice1.length; i++) {
+					if (choice1[i] == true) {
+						this.board.addOtherPlayerObjectives(objectives1[i]);
+					}
+				}
+				
+				// OBJETIVOS NAO ESCOLHIDOS RETORNAM AO FINAL DA LISTA
+				for (int i = 0; i < choice1.length; i++) {
+					if (choice1[i] == false) {
+						this.board.addObjectives(objectives1[i]);
 					}
 				}
 				this.status = -1;
@@ -308,9 +320,6 @@ public class Controller {
 		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
 
-		// teste
-		System.out.println(this.board.getPlayer().getName() + " - " + this.playerTurn + " - " + this.status);
-		
 		// TESTE --- ATUALIZAR TELA 
 		actor.refreshGUI();
 	}

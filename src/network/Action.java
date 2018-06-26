@@ -43,7 +43,7 @@ public class Action implements Jogada {
 	// QUANTIDADE DE CARTA COMPRADA DO DECK
 	public int buyDeckCard = 0;
 	
-	// POSI��O DAS CARTAS COMPRADA NA MESA
+	// POSICAO DAS CARTAS COMPRADA NA MESA
 	public int[] drawBoardCard = {-1, -1};
 
 	// MAO INICIAL

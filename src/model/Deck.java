@@ -17,25 +17,16 @@ public class Deck implements Jogada {
 		
 	public Deck(ArrayList<City> cities) {
 				
-		// TESTE
+		// Objetivos
 		this.objectives = new ArrayList<ObjectiveCard>();
-		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(0), cities.get(5)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(2), cities.get(6)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(3), cities.get(7)));
-		this.objectives.add(new ObjectiveCard(1,cities.get(4), cities.get(8)));
-		
+		for (int i = 5; i <= 30; i+=5) {
+			this.objectives.add(new ObjectiveCard(1 ,cities.get(i), cities.get(i+1)));
+			this.objectives.add(new ObjectiveCard(2 ,cities.get(i+2), cities.get(i)));
+			this.objectives.add(new ObjectiveCard(3 ,cities.get(i), cities.get(i+3)));
+			this.objectives.add(new ObjectiveCard(4 ,cities.get(i+4), cities.get(i)));
+			this.objectives.add(new ObjectiveCard(5 ,cities.get(i), cities.get(i+5)));
+
+		}
 		// Adiciona as 14 cartas curinga
 		this.cardsDeck = new ArrayList<WagonCard>();
 		for (int i = 0; i < 14; i++) {
