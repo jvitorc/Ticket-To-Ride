@@ -28,8 +28,8 @@ public class GUIBottom {
         this.main = main;
         this.mainLayout = mainLayout;
         this.actorPlayer = actorPlayer;
-        this.bottomLayout = buildBottom();
         this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        this.bottomLayout = buildBottom();
     }
 
     public HBox getBottom() {

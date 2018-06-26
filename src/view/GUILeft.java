@@ -24,8 +24,8 @@ public class GUILeft {
         this.main = main;
         this.mainLayout = mainLayout;
         this.actorPlayer = actorPlayer;
-        this.leftLayout = buildLeft();
         this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        this.leftLayout = buildLeft();
     }
 
     public VBox getLeft() {
@@ -63,27 +63,27 @@ public class GUILeft {
         Label header = new Label("Carta para Comprar");
 
         cardOptions.getChildren().addAll(header,
-                makeOption("1","Carta"),
-                makeOption("2", "Carta"),
-                makeOption("3", "Carta"),
-                makeOption("4", "Carta"),
-                makeOption("5", "Carta"),
-                makeOption(" ", "Monte"),
+                makeOption(0, "Carta", false),
+                makeOption(1, "Carta", false),
+                makeOption(2, "Carta", false),
+                makeOption(3, "Carta", false),
+                makeOption(4, "Carta", false),
+                makeOption(5, "Monte", true),
                 new Separator());
 
         return cardOptions;
     }
 
-    private HBox makeOption(String cardValue, String place) {
+    private HBox makeOption(int position, String place, boolean deck) {
         HBox cardOption = new HBox();
 
         Insets labelPadding = new Insets(10);
         Insets boxPadding = new Insets(1, 10, 1,2);
 
-        Label card = new Label(cardValue);
+        Label card = new Label("?");
         card.setUserData("");
         Button button = new Button("Comprar " + place);
-        button.setOnAction(e -> drawCardHandler(card));
+        button.setOnAction(e -> drawCardHandler(position, place, deck));
 
         cardOption.getChildren().addAll(card, button);
         card.setPadding(labelPadding);
@@ -93,44 +93,14 @@ public class GUILeft {
         return cardOption;
     }
 
-    private void drawCardHandler(Label card) {
+    private void drawCardHandler(int position, String place, boolean deck) {
         // passar a carta para o jogador, atualizar carta nova carta no board
-        switch (card.getText()) {
-            case ("0"):
-            	this.guiPlayers.get(0).incBlack();
-                break;
-            case ("1"):
-            	this.guiPlayers.get(0).incBlue();
-                break;
-            case ("2"):
-            	this.guiPlayers.get(0).incGreen();
-                break;
-            case ("3"):
-            	this.guiPlayers.get(0).incOrange();
-                break;
-            case ("4"):
-            	this.guiPlayers.get(0).incPurple();
-                break;
-            case ("5"):
-            	this.guiPlayers.get(0).incMulticolor();
-                break;
-            case ("6"):
-            	this.guiPlayers.get(0).incRed();
-                break;
-            case ("7"):
-            	this.guiPlayers.get(0).incWhite();
-                break;
-            case ("8"):
-            	this.guiPlayers.get(0).incYellow();
-                break;
-            default:
-                // pega do monte, carta randomica
-                break;
-        }
-
-        // update board
+    	
+    	actorPlayer.drawCards(deck, position);
+    
         main.buildLeft(mainLayout);
         main.buildBottom(mainLayout);
+        //main.buildCenter(mainLayout);
     }
 
     private VBox buildObjectiveOption() {
@@ -155,7 +125,9 @@ public class GUILeft {
     	} else {
     		actorPlayer.drawObjetives();
     	}
-    	main.buildLeft(mainLayout);    		
+    	main.buildLeft(mainLayout);
+    	main.buildBottom(mainLayout);
+        main.buildCenter(mainLayout); 		
     }
 
     private VBox buildObjectives() {

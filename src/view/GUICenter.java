@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import model.City;
@@ -13,14 +14,18 @@ import model.Line;
 
 public class GUICenter {
 
-    //private GUIData data;
+	private GUIMain main;
+    private BorderPane mainLayout;
     private ActorPlayer actorPlayer;
     private Pane centerLayout;
+    private ArrayList<Line> lines;
 
 
-    GUICenter(ActorPlayer actorPlayer) {
-        //this.data = data;
+    GUICenter(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
+    	this.main = main;
+        this.mainLayout = mainLayout;
         this.actorPlayer = actorPlayer;
+        this.lines = actorPlayer.getDummyArray();
         this.centerLayout = buildCenter();
     }
 
@@ -32,6 +37,14 @@ public class GUICenter {
         Pane centerLayout = new Pane();
         centerLayout.getStylesheets().add(getClass().getResource("WagonColor.css").toExternalForm());
 
+        this.lines = actorPlayer.getDummyArray();
+        try {
+        	if (actorPlayer.getBoard().getLines() != null) {
+        		this.lines = actorPlayer.getBoard().getLines();
+        	}
+        } catch (Exception e ) { }
+        
+       //System.out.println(x);
         GridPane routes = buildCenterGrid();
 
         centerLayout.getChildren().addAll(routes);
@@ -44,22 +57,30 @@ public class GUICenter {
         routeGrid.setPadding(new Insets(5, 20,20,20));
         routeGrid.setVgap(5);
         routeGrid.setHgap(5);
+        
+        GUILine guiLine;
 
         ToggleGroup routeGroup = new ToggleGroup();
-        ArrayList<Line> lines = actorPlayer.getDummyArray();
-        try {
-        	if (actorPlayer.getBoard().getMap().getLines() != null) {
-        		lines = actorPlayer.getBoard().getMap().getLines();
-        	}
-        } catch (Exception e ) { }
         	
-        Boolean consumed = false;
-
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 13; j ++) {
-            	ToggleButton route = buildConstructOption(lines.get((j)+(i*13)).toString2());
-                route.setUserData(consumed);
+            	ToggleButton route = buildConstructOption(this.lines.get((j)+(i*13)).toString2());
+            	try {
+	            	if (!this.lines.get((j)+(i*13)).getPlayer().equals(null)) {
+	            		guiLine = new GUILine(true, (j)+(i*13), this.lines.get((j)+(i*13)).getColor());
+	            		if ((actorPlayer.getGUIPlayers().get(0).getName()).equals(this.lines.get((j)+(i*13)).getPlayer().getName())) {
+	            			guiLine.setOwner(actorPlayer.getGUIPlayers().get(0));
+	            		} else {
+	            			guiLine.setOwner(actorPlayer.getGUIPlayers().get(1));
+	            		}
+	            		route.getStyleClass().add(guiLine.getOwner().getColor());
+	            		route.setUserData(guiLine);
+	            	}
+            	} catch (Exception e) {
+            		route.setUserData(new GUILine(false, (j)+(i*13), this.lines.get((j)+(i*13)).getColor()));
+            	}
                 route.setToggleGroup(routeGroup);
+                route.getStyleClass().add("button");
                 GridPane.setConstraints(route, i, j);
                 routeGrid.getChildren().add(route);
             }
@@ -80,35 +101,32 @@ public class GUICenter {
         ToggleButton route = new ToggleButton(routeName);
         Insets routePadding = new Insets(5, 20, 5, 20);
 
-        route.setMinWidth(250);
+        route.setMinWidth(200);
         route.setPadding(routePadding);
         return route;
     }
 
     private void constructHandler(ToggleGroup group) {
-        //pega dados do jogador e ve se ele tem o que precisa pra construir essa linha
-        //se construir esse botao tem que ficar indisponivel
-
-        Boolean consumed = false;
+        GUILine lineData = ((GUILine) group.getSelectedToggle().getUserData());
 
         try {
-            consumed = (Boolean) group.getSelectedToggle().getUserData();
+        	boolean consumed = lineData.getConsumed();
 
             if (!consumed) {
-                consumeRoute(consumed, group);
+                actorPlayer.buildLine(lineData.getLineIndex(), lineData.getColor());
+                consumeRoute(lineData, group, actorPlayer.getGUIPlayers().get(0));
             } else {
-                GUIMessageBox.display("Alerta", "Rota jÃ¡ estÃ¡ ocupada");
+                GUIMessageBox.display("Alerta", "Rota já está ocupada");
             }
         } catch (NullPointerException e){
-            GUIMessageBox.display("Alerta", "Trilha nÃ£o selecionada");
+            GUIMessageBox.display("Alerta", "Trilha não selecionada");
         }
-        // teste se possivel construir
-        // pega quantidade de cartas do jogador e compara com a cor da rota
     }
 
-    private void consumeRoute(Boolean consumed, ToggleGroup group) {
-        consumed = true;
-        group.getSelectedToggle().setUserData(consumed);
+    private void consumeRoute(GUILine lineData, ToggleGroup group, GUIPlayer guiPlayer) {
+    	lineData.setConsumed(true);
+    	lineData.setOwner(guiPlayer);
+        group.getSelectedToggle().setUserData(lineData);
         ToggleButton button = (ToggleButton) group.getSelectedToggle();
         button.getStyleClass().add(actorPlayer.getPlayer().getColor());
         button.setToggleGroup(group);

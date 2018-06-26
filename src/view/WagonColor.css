@@ -33,3 +33,7 @@
 .yellow {
     -fx-background-color: yellow;
 }
+
+.button {
+	-fx-font-size: 12 px;
+}

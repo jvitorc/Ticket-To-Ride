@@ -12,7 +12,6 @@ class GUITop {
 
     private GUIMain main;
     private BorderPane mainLayout;
-    private GUIData data;
     private BorderPane topLayout;
     private Stage window;
     private Stage map;
@@ -80,7 +79,16 @@ class GUITop {
     }
 
     private void initializeGame() {
+    	
     	actorPlayer.startGame();
+
+        if (actorPlayer.getStart()) {
+            GUIMessageBox.display("Alerta", "Jogo iniciado");
+            main.buildBottom(mainLayout);
+            main.buildCenter(mainLayout);
+        } else {
+            GUIMessageBox.display("Alerta", "Jogo não iniciado");
+        }
     }
 
     private void openMap() {

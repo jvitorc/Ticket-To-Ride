@@ -12,7 +12,7 @@ public class Line implements Jogada {
 
 	private int size;
 
-	private String player;
+	private Player player;
 	
 	private City cityA;
 
@@ -25,6 +25,7 @@ public class Line implements Jogada {
 		this.size = size;
 		this.cityA = cityA;
 		this.cityB = cityB;
+		this.player = null;
 	}
 	
 	public int getId() {
@@ -47,11 +48,11 @@ public class Line implements Jogada {
 		return cityB;
 	}
 	
-	public void setPlayer(String player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 	
-	public String getPlayer() {
+	public Player getPlayer() {
 		return this.player;
 	}
 
@@ -61,7 +62,7 @@ public class Line implements Jogada {
 	}
 	
 	public String toString2() {
-		return ("Size: " + size + ", " + cityA.getName() + " - " + cityB.getName());
+		return (size + ", " + cityA.getName() + " - " + cityB.getName());
 	}
 	
 }

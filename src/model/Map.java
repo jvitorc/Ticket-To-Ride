@@ -11,11 +11,17 @@ public class Map {
 	// CALCULAR SE EXITE CAMINHO
 	private int[][] matrizG;
 	private int[] visited;
+	private boolean ready;
 	
 	public Map() {
 		lines = new ArrayList<Line>();
 		cities = new ArrayList<City>();
 		createMap();
+		this.ready = true;	
+	}
+	
+	public boolean getReady() {
+		return this.ready;
 	}
 	
 	public ArrayList<Line> getLines() {
@@ -189,6 +195,8 @@ public class Map {
 		lines.add(new Line(73, newYork, montreal, 3, WagonCard.BLUE));
 		lines.add(new Line(74, newYork, boston, 2, WagonCard.RED));
 		lines.add(new Line(75, boston, montreal, 2, WagonCard.MULTICOLOR));
+		lines.add(new Line(76, newYork, boston, 2, WagonCard.RED));
+		lines.add(new Line(77, boston, montreal, 2, WagonCard.MULTICOLOR));
 
 		this.createG();
 	}

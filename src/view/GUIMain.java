@@ -66,14 +66,13 @@ public class GUIMain {
         mainLayout.setBottom(bottom.getBottom());
     }
 
-    private void buildCenter(BorderPane mainLayout) {
-        center = new GUICenter(actorPlayer);
+    void buildCenter(BorderPane mainLayout) {
+        center = new GUICenter(this, mainLayout, actorPlayer);
         mainLayout.setCenter(center.getCenter());
     }
 }
 
 // drawCard actor player
 // contructline actor player
-// endAction controller
 // setplayed controller atualizar interface inteira
 // colocar label do controller getPlayerTurn

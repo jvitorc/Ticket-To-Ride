@@ -20,12 +20,16 @@ public class Board {
 
 
 	public Board(boolean createDeck) {
-		map = new Map();
+		this.map = new Map();
 		
 		// PRIMEIRO JOGADOR CRIA O DECK
 		if (createDeck) {
-			deck = new Deck(map.getCities());
+			deck = new Deck(this.map.getCities());
 		}
+	}
+	
+	public boolean getMapReady() {
+		return this.map.getReady();
 	}
 
 	public Deck getDeck() {
@@ -170,7 +174,7 @@ public class Board {
 	public static ArrayList<Line> getDummyArray() {
     	ArrayList<Line> lines = new ArrayList<>();
     	for (int i = 0; i < 78; i++) {
-    		lines.add(new Line(0, new City("alabama"), new City("las vegas"), 0, 0));
+    		lines.add(new Line(0, new City(""), new City(""), 0, 0));
     	}
     	
     	return lines;

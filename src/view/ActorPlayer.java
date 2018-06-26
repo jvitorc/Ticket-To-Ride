@@ -18,9 +18,11 @@ public class ActorPlayer {
 
 	private Controller controller;
 	private GUIMain window;
+	private Stage primaryStage;
 	
 	public ActorPlayer(Controller controller, Stage primaryStage) {
 		this.controller = controller;
+		this.primaryStage = primaryStage;
 		this.window = new GUIMain(this, primaryStage);
 	}
 
@@ -62,7 +64,7 @@ public class ActorPlayer {
 	
 	// CASO DE USO COMPRAR CARTAS
 	public void drawCards(boolean deck, int position) {
-		this.controller.drawCards(deck,position);
+		this.controller.drawCards(deck, position);
 	}
 
 	// CASO DE USO CONSTRUIR LINHA
@@ -193,8 +195,8 @@ public class ActorPlayer {
 	
 	public ArrayList<GUIPlayer> getDummyGUIPlayers() {
 		ArrayList<GUIPlayer> players = new ArrayList<>();
-		players.add(new GUIPlayer("astolfi", "red", 0,0,0));
-		players.add(new GUIPlayer("doidao", "black", 0,0,0));
+		players.add(new GUIPlayer("", "", 0,0,0));
+		players.add(new GUIPlayer("", "", 0,0,0));
 		return players;
 	}
 	
@@ -203,6 +205,14 @@ public class ActorPlayer {
 	}
 	
 	public void endTurn() {
-		 controller.endTurn();
+		controller.endTurn();
+	}
+	
+	public boolean getMapReady() {
+		return controller.getMapReady();
+	}
+	
+	public void refreshGUI() {
+		this.window = new GUIMain(this, primaryStage);
 	}
 }

@@ -79,7 +79,7 @@ public class Controller {
 		// COLOCA JOGADOR NO JOGO
 		this.board.setPlayer(player);
 		this.board.setOtherPlayer(otherPlayer);
-		
+
 		if (this.playerTurn) {
 			this.status = Action.CHOOSE_OBJECTIVE;
 		} else {
@@ -230,6 +230,9 @@ public class Controller {
 
 	// CASO DE USO RECEBER JOGADA --- TESTE --- ULTIMO TURNO N�O IMPLEMENTADO
 	public void setPlayed(Action action) {
+		
+		
+		
 		switch(action.action) {
 		
 			case Action.CHOOSE_OBJECTIVE:
@@ -243,7 +246,7 @@ public class Controller {
 				
 				// RECEBER MAO INICIAL
 				this.board.startHand(action.startHand);
-				this.status = Action.BUY_OBJECTIVECARD;
+				this.status = 20;
 				System.out.println("sdasda");
 				break;
 			
@@ -304,7 +307,7 @@ public class Controller {
 		this.playerTurn = true;
 
 		// TESTE --- ATUALIZAR TELA 
-		actor.updateInterface();
+		actor.refreshGUI();
 	}
 
 	private void endGame() {
@@ -369,6 +372,10 @@ public class Controller {
 	
 	public boolean getPlayerTurn() {
 		return playerTurn;
+	}
+	
+	public boolean getMapReady() {
+		return board.getMapReady();
 	}
 
 }
