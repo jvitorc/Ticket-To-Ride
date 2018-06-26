@@ -32,7 +32,7 @@ public class Controller {
 		return actor;
 	}
 	
-	public boolean getChoosseObjectives() {
+	public boolean getChooseObjectives() {
 		return this.chooseObjectives;
 	}
 	// CASO DE USO CONECTAR
@@ -87,15 +87,23 @@ public class Controller {
 		// PRIMEIRO A JOGAR
 		if (this.playerTurn) {
 			this.chooseObjectives = true;
-		} 
+		} else {
+			this.action = new Action(action.CHOOSE_OBJECTIVE, this.getBoard().getPlayer().getName());
+		}
 	}
 
 	// CASO DE USO ESCOLHER OBJETIVO -- ESCOLHER NO MINIMO 2, FAZER RESTRI��O NA INTERFACE GRAFICA
-	private void chooseObjectives() {
-		if (this.chooseObjectives != true) {
+	public void chooseObjectives() {
+		if (!this.chooseObjectives) {
+			return;
+		} else {
+			this.chooseObjectives = false;
+		}
+		
+		if (this.action != null) {
 			return;
 		}
-		this.chooseObjectives = false;
+		
 		// COMPRA 3 CARTAS
 		ObjectiveCard[] objectives = board.buyObjectivies();
 
@@ -109,15 +117,14 @@ public class Controller {
 	
 		// ADICIONA OS OBJETIVOS ESCOLHIDOS AO JOGADOR
 		for (int i = 0; i < choose.length; i++) {
-			if (choose[i] == true) {
+			if (choose[i]) {
 				this.board.addPlayerObjectives(objectives[i]);
-				
 			}
 		}
 		
 		// OBJETIVOS N�O ESCOLHIDOS RETORNAM AO FINAL DA LISTA
 		for (int i = 0; i < choose.length; i++) {
-			if (choose[i] == true) {
+			if (!choose[i]) {
 				this.board.addObjectives(objectives[i]);
 			}
 		}
@@ -135,7 +142,7 @@ public class Controller {
 	// CASO DE USO COMPRAR OBJETIVO
 	public void drawObjectives() {
 		if (this.action != null) {
-			if (this.action.action != Action.CHOOSE_OBJECTIVE) {
+			if (!(this.action.action == Action.CHOOSE_OBJECTIVE)) {
 				return;
 			}
 		}
@@ -249,7 +256,7 @@ public class Controller {
 				
 				// RECEBER M�O INICIAL
 				this.board.startHand(action.startHand);
-				this.action = new Action(Action.CHOOSE_OBJECTIVE, this.board.getPlayer().getName());
+				this.action = new Action(Action.BUY_OBJECTIVECARD, this.board.getPlayer().getName());
 				break;
 			
 			case Action.BUY_OBJECTIVECARD:
@@ -354,6 +361,22 @@ public class Controller {
 			list.add(card.toString());
 		}
 		return list;
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+	
+	public Player getPlayer() {
+		return board.getPlayer();
+	}
+	
+	public ArrayList<Line> getDummyArray() {
+		return board.getDummyArray();
+	}
+	
+	public boolean getPlayerTurn() {
+		return playerTurn;
 	}
 
 }

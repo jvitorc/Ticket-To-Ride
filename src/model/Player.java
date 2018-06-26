@@ -30,8 +30,26 @@ public class Player {
 		return name;
 	}
 
-	public int getColor() {
-		return color;
+	public String getColor() {
+		String colorName;
+		switch (color) {
+		case 0 :
+			colorName = "blue";
+			break;
+		case 1 :
+			colorName = "red";
+			break;
+		case 2 :
+			colorName = "green";
+			break;
+		case 3 :
+			colorName = "yellow";
+			break;
+		default :
+			colorName = "black";
+			break;
+		}
+		return colorName;
 	}
 	
 	public void setColor(int color) {

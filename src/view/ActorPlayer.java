@@ -5,6 +5,9 @@ import java.util.Scanner;
 
 import control.Controller;
 import javafx.stage.Stage;
+import model.Board;
+import model.Line;
+import model.Player;
 import network.Action;
 
 public class ActorPlayer {
@@ -124,5 +127,25 @@ public class ActorPlayer {
 	public void buyObjective() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Board getBoard() {
+		return controller.getBoard();
+	}
+	
+	public Player getPlayer() {
+		return controller.getPlayer();
+	}
+	
+	public ArrayList<Line> getDummyArray() {
+		return controller.getDummyArray();
+	}
+	
+	public boolean getChooseObjectives() {
+		return controller.getChooseObjectives();
+	}
+	
+	public void chooseObjectives() {
+		controller.chooseObjectives();
 	}
 }

@@ -166,4 +166,13 @@ public class Board {
 	public Map getMap() {
 		return this.map;
 	}
+	
+	public static ArrayList<Line> getDummyArray() {
+    	ArrayList<Line> lines = new ArrayList<>();
+    	for (int i = 0; i < 78; i++) {
+    		lines.add(new Line(0, new City("alabama"), new City("las vegas"), 0, 0));
+    	}
+    	
+    	return lines;
+    }
 }

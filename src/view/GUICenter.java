@@ -1,20 +1,26 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import model.City;
+import model.Line;
 
 public class GUICenter {
 
-    private GUIData data;
+    //private GUIData data;
+    private ActorPlayer actorPlayer;
     private Pane centerLayout;
 
 
-    GUICenter(GUIData data) {
-        this.data = data;
+    GUICenter(ActorPlayer actorPlayer) {
+        //this.data = data;
+        this.actorPlayer = actorPlayer;
         this.centerLayout = buildCenter();
     }
 
@@ -40,14 +46,18 @@ public class GUICenter {
         routeGrid.setHgap(5);
 
         ToggleGroup routeGroup = new ToggleGroup();
-
-        data.initRoutes();
-        data.initRoutesSizes();
+        ArrayList<Line> lines = actorPlayer.getDummyArray();
+        try {
+        	if (actorPlayer.getBoard().getMap().getLines() != null) {
+        		lines = actorPlayer.getBoard().getMap().getLines();
+        	}
+        } catch (Exception e ) { }
+        	
         Boolean consumed = false;
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 13; j ++) {
-                ToggleButton route = buildConstructOption(data.getRoutes().get(j) + " " + data.getRoutesSize().get(j));
+            	ToggleButton route = buildConstructOption(lines.get((j)+(i*13)).toString2());
                 route.setUserData(consumed);
                 route.setToggleGroup(routeGroup);
                 GridPane.setConstraints(route, i, j);
@@ -100,7 +110,8 @@ public class GUICenter {
         consumed = true;
         group.getSelectedToggle().setUserData(consumed);
         ToggleButton button = (ToggleButton) group.getSelectedToggle();
-        button.getStyleClass().add(data.getPlayers().get(0).getColor());
+        button.getStyleClass().add(actorPlayer.getPlayer().getColor());
         button.setToggleGroup(group);
     }
+   
 }

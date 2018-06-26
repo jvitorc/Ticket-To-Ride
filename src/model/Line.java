@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Line implements Jogada {
@@ -57,4 +59,9 @@ public class Line implements Jogada {
 	public String toString() {
 		return "@" + id + "color = " + color + ", size = " + size + ", city " + cityA.getName() + ", city " + cityB.getName() + "]";
 	}
+	
+	public String toString2() {
+		return ("Size: " + size + ", " + cityA.getName() + " - " + cityB.getName());
+	}
+	
 }

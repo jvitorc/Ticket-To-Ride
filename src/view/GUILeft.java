@@ -140,8 +140,12 @@ public class GUILeft {
     }
 
     private void drawObjectiveHandler() {
-    	actorPlayer.drawObjetives();;
-    	main.buildLeft(mainLayout);
+    	if (actorPlayer.getChooseObjectives()) {
+    		actorPlayer.chooseObjectives();
+    	} else {
+    		actorPlayer.drawObjetives();
+    	}
+    	main.buildLeft(mainLayout);    		
     }
 
     private VBox buildObjectives() {
