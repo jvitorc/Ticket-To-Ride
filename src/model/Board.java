@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Board {
 
-	// INFORMAÇÃO DOS JOGADORES
+	// INFORMAï¿½ï¿½O DOS JOGADORES
 	private static Player player;
 	private static Player otherPlayer;
 
@@ -62,7 +62,7 @@ public class Board {
 		this.otherPlayer = otherPlayer;
 	}
 
-	// MÃO INICIAL - 4 CARTAS
+	// Mï¿½O INICIAL - 4 CARTAS
 	public List<WagonCard> startHand(List<WagonCard> list) {
 		Player first = this.otherPlayer;
 		Player second = this.player;
@@ -152,7 +152,7 @@ public class Board {
 		
 		boolean build =  p.addLine(this.getLine(line), color);
 		if (build) {
-			this.getLine(line).setPlayer(p.getName());
+			this.getLine(line).setPlayer(p);
 		}
 		return build;
 	}

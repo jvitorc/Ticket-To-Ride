@@ -132,8 +132,7 @@ public class Controller {
 	// CASO DE USO COMPRAR OBJETIVO
 	public void drawObjectives() {
 		if (this.playerTurn) {
-			if (this.status == -1 || this.status == Action.BUY_OBJECTIVECARD) {
-				this.status = -100;
+			if ((this.status == -1) || (this.status == 20)) {
 				// COMPRA 3 CARTAS
 				ObjectiveCard[] objectives = board.buyObjectivies();
 		
@@ -162,6 +161,7 @@ public class Controller {
 		
 				this.action = new Action(Action.BUY_OBJECTIVECARD, board.getPlayer().getName());
 				action.choice = choice;
+				this.status = 10;
 				this.endTurn();
 			}
 		}
@@ -213,7 +213,7 @@ public class Controller {
 			if (this.board.getPlayer().twoWagons()) {
 				action.lastTurn = true;
 			}
-			this.status = -100;
+			this.status = 10;
 			this.endTurn();
 		}
 	}
@@ -221,10 +221,12 @@ public class Controller {
 	
 	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO N�O IMPLEMENTADO
 	public void endTurn() {
+		System.out.println(this.board.getPlayer().getName() + " - " + this.playerTurn + " - " + this.status);
 		if (status == 10) {
 			this.playerTurn = false;
 			this.netGames.sendAction(this.action);
-			actor.showMessage("Turno do oponente", ActorPlayer.SUCCESSUFUL);
+			this.status = -100;
+			System.out.println(this.board.getPlayer().getName() + " - " + this.playerTurn + " - " + this.status);
 		} 
 	}
 
@@ -306,6 +308,9 @@ public class Controller {
 		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
 
+		// teste
+		System.out.println(this.board.getPlayer().getName() + " - " + this.playerTurn + " - " + this.status);
+		
 		// TESTE --- ATUALIZAR TELA 
 		actor.refreshGUI();
 	}

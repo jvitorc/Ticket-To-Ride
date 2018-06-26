@@ -15,8 +15,6 @@ public class Player {
 	private int wagons = 45;
 	private int points = 0; 
 	
-	int[] cardsColor = new int[8];
-	
 	private ArrayList<ObjectiveCard> objectives = new ArrayList<ObjectiveCard>();
 	private ArrayList<WagonCard> cards = new ArrayList<WagonCard>();
 	private ArrayList<Line> lines = new ArrayList<Line>();
@@ -30,10 +28,6 @@ public class Player {
 		return name;
 	}
 	
-	public int[] getcardsList() {
-		return cardsColor;
-	}
-
 	public String getColor() {
 		String colorName;
 		switch (color) {
@@ -79,7 +73,6 @@ public class Player {
 	
 	public void addCards(WagonCard card) {
 		cards.add(card);
-		this.cardsColor[card.getColor()] += 1;
 	}
 
 	public ArrayList<String> getCardsInfo() {
@@ -122,7 +115,6 @@ public class Player {
 				if (list.size() == line.getSize()) {
 					for (WagonCard c: list) {
 						this.cards.remove(c);
-						this.cardsColor[c.getColor()] -= 1;
 					}
 					this.wagons -=  line.getSize();
 					this.lines.add(line);
