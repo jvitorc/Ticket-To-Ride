@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,17 +14,18 @@ import javafx.scene.layout.VBox;
 
 public class GUILeft {
 
-    private GUIData data;
     private BorderPane mainLayout;
     private VBox leftLayout;
     private GUIMain main;
     private ActorPlayer actorPlayer;
+    private ArrayList<GUIPlayer> guiPlayers;
 
     GUILeft(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
         this.main = main;
         this.mainLayout = mainLayout;
         this.actorPlayer = actorPlayer;
         this.leftLayout = buildLeft();
+        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
     }
 
     public VBox getLeft() {
@@ -31,6 +34,13 @@ public class GUILeft {
 
     private VBox buildLeft() {
         VBox leftLayout = new VBox();
+        
+        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        try {
+        	if (actorPlayer.getGUIPlayers() != null) {
+        		this.guiPlayers = actorPlayer.getGUIPlayers();
+        	}
+        } catch (Exception e ) { }
 
         VBox cardOption = buildCardOptions();
         cardOption.setAlignment(Pos.TOP_CENTER);
@@ -87,31 +97,31 @@ public class GUILeft {
         // passar a carta para o jogador, atualizar carta nova carta no board
         switch (card.getText()) {
             case ("0"):
-                data.getPlayers().get(0).incBlack();
+            	this.guiPlayers.get(0).incBlack();
                 break;
             case ("1"):
-                data.getPlayers().get(0).incBlue();
+            	this.guiPlayers.get(0).incBlue();
                 break;
             case ("2"):
-                data.getPlayers().get(0).incGreen();
+            	this.guiPlayers.get(0).incGreen();
                 break;
             case ("3"):
-                data.getPlayers().get(0).incOrange();
+            	this.guiPlayers.get(0).incOrange();
                 break;
             case ("4"):
-                data.getPlayers().get(0).incPink();
+            	this.guiPlayers.get(0).incPurple();
                 break;
             case ("5"):
-                data.getPlayers().get(0).incRainbow();
+            	this.guiPlayers.get(0).incMulticolor();
                 break;
             case ("6"):
-                data.getPlayers().get(0).incRed();
+            	this.guiPlayers.get(0).incRed();
                 break;
             case ("7"):
-                data.getPlayers().get(0).incWhite();
+            	this.guiPlayers.get(0).incWhite();
                 break;
             case ("8"):
-                data.getPlayers().get(0).incYellow();
+            	this.guiPlayers.get(0).incYellow();
                 break;
             default:
                 // pega do monte, carta randomica

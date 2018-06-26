@@ -1,5 +1,7 @@
 package view;
 
+import java.util.ArrayList;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,19 +13,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Line;
+import model.Player;
 
 public class GUIBottom {
 
     private GUIMain main;
     private BorderPane mainLayout;
-    private GUIData data;
+    private ActorPlayer actorPlayer;
     private HBox bottomLayout;
+    private ArrayList<GUIPlayer> guiPlayers;
 
-    GUIBottom(GUIMain main, BorderPane mainLayout, GUIData data) {
+    GUIBottom(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
         this.main = main;
         this.mainLayout = mainLayout;
-        this.data = data;
+        this.actorPlayer = actorPlayer;
         this.bottomLayout = buildBottom();
+        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
     }
 
     public HBox getBottom() {
@@ -32,6 +38,13 @@ public class GUIBottom {
 
     private HBox buildBottom() {
         this.bottomLayout = new HBox();
+        
+        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        try {
+        	if (actorPlayer.getGUIPlayers() != null) {
+        		this.guiPlayers = actorPlayer.getGUIPlayers();
+        	}
+        } catch (Exception e ) { }
 
         VBox table = new VBox();
         table.getChildren().addAll(getPlayerTable());
@@ -48,7 +61,7 @@ public class GUIBottom {
         return bottomLayout;
     }
 
-    private TableView<GUIPlayer> getPlayerTable() {
+	private TableView<GUIPlayer> getPlayerTable() {
         TableView<GUIPlayer> table = new TableView<>();
         table.setItems(getPlayer());
         table.getColumns().addAll(playerColumn("Nome Jogador", 150, "name"),
@@ -73,8 +86,8 @@ public class GUIBottom {
         ObservableList<GUIPlayer> players = FXCollections.observableArrayList();
 
         // pegar jogadores de algum lugar e montar tabela
-
-        players.addAll(this.data.getPlayers());
+        
+        players.addAll(guiPlayers);
 
         return players;
     }
@@ -88,31 +101,31 @@ public class GUIBottom {
         Label header = new Label("Cartas do Jogador");
         GridPane.setConstraints(header,1,0, 5, 1);
 
-        HBox blackCards = buildQttCards("Pretas", data.getPlayers().get(0).getBlack());
+        HBox blackCards = buildQttCards("Pretas", this.guiPlayers.get(0).getBlack());
         GridPane.setConstraints(blackCards, 0,1);
 
-        HBox blueCards = buildQttCards("Azuis", data.getPlayers().get(0).getBlue());
+        HBox blueCards = buildQttCards("Azuis", this.guiPlayers.get(0).getBlue());
         GridPane.setConstraints(blueCards, 0,3);
 
-        HBox greenCards = buildQttCards("Verdes", data.getPlayers().get(0).getGreen());
+        HBox greenCards = buildQttCards("Verdes", this.guiPlayers.get(0).getGreen());
         GridPane.setConstraints(greenCards, 0,5);
 
-        HBox orangeCards = buildQttCards("Laranjas", data.getPlayers().get(0).getOrange());
+        HBox orangeCards = buildQttCards("Laranjas", this.guiPlayers.get(0).getOrange());
         GridPane.setConstraints(orangeCards, 2,1);
 
-        HBox pinkCards = buildQttCards("Rosas", data.getPlayers().get(0).getPink());
+        HBox pinkCards = buildQttCards("Roxas", this.guiPlayers.get(0).getPurple());
         GridPane.setConstraints(pinkCards, 2,3);
 
-        HBox rainbowCards = buildQttCards("Arco-Iris", data.getPlayers().get(0).getRainbow());
+        HBox rainbowCards = buildQttCards("Multi-color", this.guiPlayers.get(0).getMulticolor());
         GridPane.setConstraints(rainbowCards, 2,5);
 
-        HBox redCards = buildQttCards("Vermelhas", data.getPlayers().get(0).getRed());
+        HBox redCards = buildQttCards("Vermelhas", this.guiPlayers.get(0).getRed());
         GridPane.setConstraints(redCards, 4,1);
 
-        HBox whiteCards = buildQttCards("Brancas", data.getPlayers().get(0).getWhite());
+        HBox whiteCards = buildQttCards("Brancas", this.guiPlayers.get(0).getWhite());
         GridPane.setConstraints(whiteCards, 4,3);
 
-        HBox yellowCards = buildQttCards("Amarelas", data.getPlayers().get(0).getYellow());
+        HBox yellowCards = buildQttCards("Amarelas", this.guiPlayers.get(0).getYellow());
         GridPane.setConstraints(yellowCards, 4,5);
 
         Separator horizontalSeparator1 = new Separator();
@@ -183,6 +196,20 @@ public class GUIBottom {
     }
 
     private void endActionHandler() {
-
+    	actorPlayer.endTurn();
     }
+    
+    private Label buildLabelTurn() {
+    	Label label;
+    	
+    	if (actorPlayer.getPlayerTurn()) {
+    		label = new Label("Seu Turno");
+    	} else {
+    		label = new Label("Turno do Outro");
+    	}
+    	
+    	return label;
+    }
+    
+    
 }

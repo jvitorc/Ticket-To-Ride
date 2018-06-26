@@ -23,7 +23,6 @@ public class GUIMain {
 
     public void start(Stage primaryStage) {
 
-        data.initPlayers();
         window = primaryStage;
         window.setTitle("Ticket to Ride");
         window.setOnCloseRequest(e -> {
@@ -63,7 +62,7 @@ public class GUIMain {
     }
 
     void buildBottom(BorderPane mainLayout) {
-        bottom = new GUIBottom(this, mainLayout, data);
+        bottom = new GUIBottom(this, mainLayout, actorPlayer);
         mainLayout.setBottom(bottom.getBottom());
     }
 

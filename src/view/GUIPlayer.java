@@ -11,24 +11,41 @@ public class GUIPlayer {
     private int blue;
     private int green;
     private int orange;
-    private int pink;
-    private int rainbow;
+    private int purple;
+    private int multicolor;
     private int red;
     private int white;
     private int yellow;
-
-    public GUIPlayer(String name, String color, int points, int qttWagons) {
-        this.name = name;
-        this.color = color;
-        this.points = points;
-        this.qttWagons = qttWagons;
+    
+    GUIPlayer() {
+    	this.name = "";
+        this.color = "";
+        this.points = 0;
+        this.qttWagons = 0;
         this.qttCards = 0;
         this.black = 0;
         this.blue = 0;
         this.green = 0;
         this.orange = 0;
-        this.pink = 0;
-        this.rainbow = 0;
+        this.purple = 0;
+        this.multicolor = 0;
+        this.red = 0;
+        this.white = 0;
+        this.yellow = 0;
+    }
+
+    GUIPlayer(String name, String color, int points, int qttWagons, int qttCards) {
+        this.name = name;
+        this.color = color;
+        this.points = points;
+        this.qttWagons = qttWagons;
+        this.qttCards = qttCards;
+        this.black = 0;
+        this.blue = 0;
+        this.green = 0;
+        this.orange = 0;
+        this.purple = 0;
+        this.multicolor = 0;
         this.red = 0;
         this.white = 0;
         this.yellow = 0;
@@ -77,6 +94,10 @@ public class GUIPlayer {
     public int getBlack() {
         return black;
     }
+    
+    public void setBlack(int black) {
+    	this.black = black;
+    }
 
     public void incBlack() {
         this.black++;
@@ -85,6 +106,10 @@ public class GUIPlayer {
 
     public int getBlue() {
         return blue;
+    }
+    
+    public void setBlue(int blue) {
+    	this.blue = blue;
     }
 
     public void incBlue() {
@@ -95,6 +120,10 @@ public class GUIPlayer {
     public int getGreen() {
         return green;
     }
+    
+    public void setGreen(int green) {
+    	this.green = green;
+    }
 
     public void incGreen() {
         this.green++;
@@ -104,32 +133,48 @@ public class GUIPlayer {
     public int getOrange() {
         return orange;
     }
+    
+    public void setOrange(int orange) {
+    	this.orange = orange;
+    }
 
     public void incOrange() {
         this.orange++;
         this.qttCards++;
     }
 
-    public int getPink() {
-        return pink;
+    public int getPurple() {
+        return purple;
+    }
+    
+    public void setPurple(int purple) {
+    	this.purple = purple;
     }
 
-    public void incPink() {
-        this.pink++;
+    public void incPurple() {
+        this.purple++;
         this.qttCards++;
     }
 
-    public int getRainbow() {
-        return rainbow;
+    public int getMulticolor() {
+        return multicolor;
+    }
+    
+    public void setMulticolor(int multicolor) {
+    	this.multicolor = multicolor;
     }
 
-    public void incRainbow() {
-        this.rainbow++;
+    public void incMulticolor() {
+        this.multicolor++;
         this.qttCards++;
     }
 
     public int getRed() {
         return red;
+    }
+    
+    public void setRed(int red) {
+    	this.red = red;
     }
 
     public void incRed() {
@@ -140,6 +185,10 @@ public class GUIPlayer {
     public int getWhite() {
         return white;
     }
+    
+    public void setWhite(int white) {
+    	this.white = white;
+    }
 
     public void incWhite() {
         this.white++;
@@ -148,6 +197,10 @@ public class GUIPlayer {
 
     public int getYellow() {
         return yellow;
+    }
+    
+    public void setYellow(int yellow) {
+    	this.yellow = yellow;
     }
 
     public void incYellow() {

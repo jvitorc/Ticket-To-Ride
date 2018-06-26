@@ -6,8 +6,8 @@ import java.util.List;
 public class Board {
 
 	// INFORMAÇÃO DOS JOGADORES
-	private Player player;
-	private Player otherPlayer;
+	private static Player player;
+	private static Player otherPlayer;
 
 	// MAPA
 	private Map map;
@@ -175,4 +175,18 @@ public class Board {
     	
     	return lines;
     }
+	
+	public static ArrayList<Player> getPlayers() {
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(player);
+		players.add(otherPlayer);
+		return players;
+	}
+	
+	public static ArrayList<Player> getDummyPlayers() {
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(new Player("", 0));
+		players.add(new Player("", 0));	
+		return players;
+	}
 }

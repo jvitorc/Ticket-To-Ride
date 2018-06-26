@@ -353,6 +353,14 @@ public class Controller {
 		return board.getPlayer();
 	}
 	
+	public ArrayList<Player> getPlayers() {
+		return board.getPlayers();
+	}
+	
+	public ArrayList<Player> getDummyPlayers() {
+		return board.getDummyPlayers();
+	}
+	
 	public ArrayList<Line> getDummyArray() {
 		return board.getDummyArray();
 	}

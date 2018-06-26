@@ -124,4 +124,84 @@ public class ActorPlayer {
 	public void chooseObjectives() {
 		controller.chooseObjectives();
 	}
+
+	public ArrayList<GUIPlayer> getGUIPlayers(ArrayList<Player> playersToConvert) {
+    	ArrayList<Player> players = playersToConvert;
+    	ArrayList<GUIPlayer> guiPlayers = new ArrayList<>();
+    	
+    	for (Player player : players) {
+    		guiPlayers.add(setGUIPlayer(player));
+    	}
+    	return guiPlayers;
+    }
+	
+	public GUIPlayer setGUIPlayer(Player player) {
+		GUIPlayer guiPlayer = new GUIPlayer();
+		guiPlayer.setName(player.getName());
+		guiPlayer.setColor(player.getColor());
+		guiPlayer.setQttWagons(player.getWagons());
+		guiPlayer.setQttCards(player.getCards().size());
+		guiPlayer.setPoints(player.getPoints());
+		for (WagonCard card : player.getCards()) {
+			guiPlayer = addCardsGUIPlayer(guiPlayer, card);
+		}
+		
+		return guiPlayer;
+	}
+	
+	public GUIPlayer addCardsGUIPlayer(GUIPlayer guiPlayer, WagonCard card) {
+		switch (card.getColor()) {
+			case (0):
+				guiPlayer.incBlack();
+	            break;
+	        case (1):
+	        	guiPlayer.incBlue();
+	            break;
+	        case (2):
+	        	guiPlayer.incGreen();
+	            break;
+	        case (3):
+	        	guiPlayer.incOrange();
+	            break;
+	        case (4):
+	        	guiPlayer.incPurple();
+	            break;
+	        case (5):
+	        	guiPlayer.incMulticolor();
+	            break;
+	        case (6):
+	        	guiPlayer.incRed();
+	            break;
+	        case (7):
+	        	guiPlayer.incWhite();
+	            break;
+	        default:
+	        	guiPlayer.incYellow();
+	            break;
+		}
+		return guiPlayer;
+	}
+	
+	public ArrayList<Player> getPlayers() {
+		return controller.getPlayers();
+	}
+	
+	public ArrayList<GUIPlayer> getGUIPlayers() {
+		return getGUIPlayers(controller.getPlayers());
+	}
+	
+	public ArrayList<GUIPlayer> getDummyGUIPlayers() {
+		ArrayList<GUIPlayer> players = new ArrayList<>();
+		players.add(new GUIPlayer("astolfi", "red", 0,0,0));
+		players.add(new GUIPlayer("doidao", "black", 0,0,0));
+		return players;
+	}
+	
+	public boolean getPlayerTurn() {
+		return controller.getPlayerTurn();
+	}
+	
+	public boolean endTurn() {
+		return controller.endTurn();
+	}
 }

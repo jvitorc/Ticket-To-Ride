@@ -11,9 +11,7 @@ public class Player {
 	public static final int BLACK = 4;
 	
 	private String name; 	
-	
 	private int color;
-	
 	private int wagons = 45;
 	private int points = 0; 
 	

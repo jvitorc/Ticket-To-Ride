@@ -72,11 +72,6 @@ public class GUIData {
         this.boardCards.add(4, "5");
     }
 
-    public void initPlayers() {
-        this.players.add(0, new GUIPlayer("abobora", "blue", 10, 10));
-        this.players.add(1, new GUIPlayer("abacaxi", "red", 10, 10));
-    }
-
     public List<String> getRoutes() {
         return routes;
     }
