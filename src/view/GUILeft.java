@@ -1,30 +1,21 @@
 package view;
 
-import java.util.ArrayList;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
 public class GUILeft {
 
-    private BorderPane mainLayout;
     private VBox leftLayout;
-    private GUIMain main;
     private ActorPlayer actorPlayer;
-    private ArrayList<GUIPlayer> guiPlayers;
 
-    GUILeft(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
-        this.main = main;
-        this.mainLayout = mainLayout;
+    GUILeft(ActorPlayer actorPlayer) {
         this.actorPlayer = actorPlayer;
-        this.guiPlayers = actorPlayer.getDummyGUIPlayers();
         this.leftLayout = buildLeft();
     }
 
@@ -34,14 +25,6 @@ public class GUILeft {
 
     private VBox buildLeft() {
         VBox leftLayout = new VBox();
-        
-        try {
-        	if (actorPlayer.getGUIPlayers() != null) {
-        		this.guiPlayers = actorPlayer.getGUIPlayers();
-        	}
-        } catch (Exception e ) {
-        	this.guiPlayers = actorPlayer.getDummyGUIPlayers();
-        }
 
         VBox cardOption = buildCardOptions();
         cardOption.setAlignment(Pos.TOP_CENTER);

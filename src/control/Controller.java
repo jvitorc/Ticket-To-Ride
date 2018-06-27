@@ -2,8 +2,6 @@ package control;
 
 import java.util.ArrayList;
 
-import br.ufsc.inf.leobr.cliente.Jogada;
-import javafx.application.Application;
 import javafx.stage.Stage;
 import model.*;
 import network.*;
@@ -19,7 +17,6 @@ public class Controller {
 	private int status = -100;
 	private Action action = null;
 	private boolean playerTurn;
-	private boolean lastTurn;	
 	private Board board;
 	private boolean endGame;
 
@@ -312,7 +309,7 @@ public class Controller {
 
 	}
 
-	private void endGame() {
+	public void endGame() {
 		// ENVIAR FIM JOGO
 
 		// CALCULAR PONTUA��O DE CADA JOGADDOR

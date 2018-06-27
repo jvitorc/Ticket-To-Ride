@@ -10,7 +10,6 @@ public class Map {
 
 	// CALCULAR SE EXITE CAMINHO
 	private int[][] matrizG;
-	private int[] visited;
 	private boolean ready;
 	
 	public Map() {

@@ -1,7 +1,5 @@
 package model;
 
-import java.util.ArrayList;
-
 import br.ufsc.inf.leobr.cliente.Jogada;
 
 public class Line implements Jogada {

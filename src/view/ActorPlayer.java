@@ -1,7 +1,6 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import control.Controller;
 import javafx.stage.Stage;
@@ -9,7 +8,6 @@ import model.Board;
 import model.Line;
 import model.Player;
 import model.WagonCard;
-import network.Action;
 
 public class ActorPlayer {
 	private static final int QUANTIDADE_JOGADORES = 2;
@@ -218,5 +216,9 @@ public class ActorPlayer {
 	
 	public String getColorName(int color) {
 		return controller.getColorName(color);
+	}
+	
+	public void endGame() {
+		controller.endGame();
 	}
 }

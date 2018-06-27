@@ -10,16 +10,12 @@ import javafx.stage.Stage;
 
 class GUITop {
 
-    private GUIMain main;
-    private BorderPane mainLayout;
     private BorderPane topLayout;
     private Stage window;
     private Stage map;
     private ActorPlayer actorPlayer;
 
-    GUITop(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer, Stage window) {
-        this.main = main;
-        this.mainLayout = mainLayout;
+    GUITop(ActorPlayer actorPlayer, Stage window) {
         this.actorPlayer = actorPlayer;
         this.window = window;
         this.topLayout = buildTop();

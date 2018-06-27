@@ -1,6 +1,5 @@
 package view;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -13,7 +12,6 @@ public class GUIMain {
     private GUICenter center;
     private GUILeft left;
     private GUITop top;
-    private GUIData data = new GUIData();
     private BorderPane mainLayout;
     
     GUIMain(ActorPlayer actorPlayer, Stage primaryStage) {
@@ -52,27 +50,22 @@ public class GUIMain {
     }
 
     private void buildTop(BorderPane mainLayout) {
-        top = new GUITop(this, mainLayout, actorPlayer, window);
+        top = new GUITop(actorPlayer, window);
         mainLayout.setTop(top.getTopLayout());
     }
 
     void buildLeft(BorderPane mainLayout) {
-        left = new GUILeft(this, mainLayout, actorPlayer);
+        left = new GUILeft(actorPlayer);
         mainLayout.setLeft(left.getLeft());
     }
 
     void buildBottom(BorderPane mainLayout) {
-        bottom = new GUIBottom(this, mainLayout, actorPlayer);
+        bottom = new GUIBottom(actorPlayer);
         mainLayout.setBottom(bottom.getBottom());
     }
 
     void buildCenter(BorderPane mainLayout) {
-        center = new GUICenter(this, mainLayout, actorPlayer);
+        center = new GUICenter(actorPlayer);
         mainLayout.setCenter(center.getCenter());
     }
 }
-
-// drawCard actor player
-// contructline actor player
-// setplayed controller atualizar interface inteira
-// colocar label do controller getPlayerTurn

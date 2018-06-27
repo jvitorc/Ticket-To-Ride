@@ -6,24 +6,18 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import model.City;
 import model.Line;
 
 public class GUICenter {
 
-	private GUIMain main;
-    private BorderPane mainLayout;
     private ActorPlayer actorPlayer;
     private Pane centerLayout;
     private ArrayList<Line> lines;
 
 
-    GUICenter(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
-    	this.main = main;
-        this.mainLayout = mainLayout;
+    GUICenter(ActorPlayer actorPlayer) {
         this.actorPlayer = actorPlayer;
         this.lines = actorPlayer.getDummyArray();
         this.centerLayout = buildCenter();

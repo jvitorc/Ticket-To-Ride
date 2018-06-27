@@ -9,27 +9,22 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import model.Line;
-import model.Player;
 
 public class GUIBottom {
 
-    private GUIMain main;
-    private BorderPane mainLayout;
     private ActorPlayer actorPlayer;
     private HBox bottomLayout;
     private ArrayList<GUIPlayer> guiPlayers;
+    private boolean startGame;
 
-    GUIBottom(GUIMain main, BorderPane mainLayout, ActorPlayer actorPlayer) {
-        this.main = main;
-        this.mainLayout = mainLayout;
+    GUIBottom(ActorPlayer actorPlayer) {
         this.actorPlayer = actorPlayer;
         this.guiPlayers = actorPlayer.getDummyGUIPlayers();
+        this.startGame = true;
         this.bottomLayout = buildBottom();
     }
 
@@ -43,6 +38,7 @@ public class GUIBottom {
         try {
         	if (actorPlayer.getGUIPlayers() != null) {
         		this.guiPlayers = actorPlayer.getGUIPlayers();
+        		this.startGame = false;
         	}
         } catch (Exception e ) {
         	this.guiPlayers = actorPlayer.getDummyGUIPlayers();
@@ -53,6 +49,10 @@ public class GUIBottom {
         table.setMaxHeight(150);
         table.setMaxWidth(498);
         table.setAlignment(Pos.CENTER_LEFT);
+        
+        if ((guiPlayers.get(0).getQttWagons() < 4 || guiPlayers.get(0).getQttWagons() < 4) && !startGame) {
+        	endGame();
+        }
 
         GridPane playerCards = buildPlayerCards();
         VBox endAction = buildEndAction();
@@ -67,10 +67,10 @@ public class GUIBottom {
         TableView<GUIPlayer> table = new TableView<>();
         table.setItems(getPlayer());
         table.getColumns().addAll(playerColumn("Nome Jogador", 150, "name"),
-                playerColumn("Cor", 150, "color"),
-                playerColumn("Pontos", 50, "points"),
-                playerColumn("Vagoes", 50, "qttWagons"),
-                playerColumn("Cartas", 50, "qttCards"));
+								                playerColumn("Cor", 150, "color"),
+								                playerColumn("Pontos", 50, "points"),
+								                playerColumn("Vagoes", 50, "qttWagons"),
+								                playerColumn("Cartas", 50, "qttCards"));
 
         return table;
     }
@@ -201,7 +201,6 @@ public class GUIBottom {
     }
     
     private StackPane buildLabelTurn() {
-    	
     	StackPane pane = new StackPane();
     	pane.setPadding(new Insets(10, 20, 10, 20));
     	Label label;
@@ -219,7 +218,6 @@ public class GUIBottom {
     }
     
     private StackPane buildRefreshButton() {
-    	
     	StackPane pane = new StackPane();
     	pane.setPadding(new Insets(10, 20, 10, 20));
     	Button button = new Button("Atualiza GUI");
@@ -231,5 +229,12 @@ public class GUIBottom {
     	return pane;
     }
     
-    
+    private void endGame() {
+		if (guiPlayers.get(0).getPoints() > guiPlayers.get(1).getPoints()) {
+			GUIMessageBox.display("Final do Jogo", "O Vencedor é: " + guiPlayers.get(0).getName());
+		} else {
+			GUIMessageBox.display("Final do Jogo", "O Vencedor é: " + guiPlayers.get(1).getName());
+		}
+		actorPlayer.endGame();
+    }
 }
