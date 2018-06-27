@@ -45,7 +45,6 @@ public class Controller {
 	// CASO DE USO INICIAR PARTIDA
 	public void startGame(int quantity) {
 		start = netGames.startGame(quantity);
-		actor.showMessage("Conexao: "+ start, 0);
 	}
 	
 	public boolean getStart() {
@@ -325,12 +324,10 @@ public class Controller {
 	public void disconnectGUI() {
 		netGames.disconnect();
 		this.clear();
-		this.actor.showMessage("Partida desconectada", ActorPlayer.ERRO);
 	}
 
 	public void disconnectNETWORK() {
 		this.clear();
-		this.actor.showMessage("Partida desconectada", ActorPlayer.ERRO);
 	}
 	
 	public void clear() {

@@ -91,7 +91,7 @@ public class GUICenter {
         ToggleButton route = new ToggleButton(routeName);
         Insets routePadding = new Insets(5, 20, 5, 20);
 
-        route.setMaxWidth(150);
+        route.setMinWidth(200);
         route.setPadding(routePadding);
         return route;
     }

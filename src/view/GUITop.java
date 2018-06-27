@@ -106,14 +106,13 @@ class GUITop {
     }
 
     public void closeProgram() {
-//        Boolean answer = GUIConfirmBox.display("Confirmação", "Tem certeza que deseja sair?");
-//        if (answer) {
-//            disconnect();
-//            window.close();
-//            try {
-//                map.close();
-//            } catch (NullPointerException e) { System.out.println("mapa nao tava aberto"); }
-//        }
-        window.close();
+       Boolean answer = GUIConfirmBox.display("Confirmação", "Tem certeza que deseja sair?");
+       if (answer) {
+           disconnect();
+           window.close();
+           try {
+               map.close();
+           } catch (NullPointerException e) { System.out.println("mapa nao tava aberto"); }
+       }
     }
 }
