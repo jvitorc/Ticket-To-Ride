@@ -38,7 +38,7 @@ public class Board {
 
 	public void setDeck(Deck deck) {
 		if (this.deck == null) {
-			this.deck = deck;
+			this.deck = deck;			
 		}
 	}
 	
@@ -143,18 +143,11 @@ public class Board {
 	}
 
 	public boolean buildLine(int line, int color, boolean player) {
-		Player p;
 		if (player) {
-			p = this.player;
+			return this.player.addLine(this.getLine(line), color);
 		} else {
-			p = this.otherPlayer;
-		}
-		
-		boolean build =  p.addLine(this.getLine(line), color);
-		if (build) {
-			this.getLine(line).setPlayer(p);
-		}
-		return build;
+			return this.otherPlayer.addLine(this.getLine(line), color);
+		}		
 	}
 	
 	public Line getLine(int line) {
@@ -162,6 +155,7 @@ public class Board {
 		for (Line l: this.map.getLines()) {
 			if (l.getId() == line) {
 				it = l;
+				break;
 			}
 		}
 		return it;
@@ -193,4 +187,5 @@ public class Board {
 		players.add(new Player("", 0));	
 		return players;
 	}
+
 }

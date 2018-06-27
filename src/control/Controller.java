@@ -21,7 +21,7 @@ public class Controller {
 	private boolean playerTurn;
 	private boolean lastTurn;	
 	private Board board;
-	private int drawCards = 0;
+	private boolean endGame;
 
 	public Controller(Stage primaryStage) {
 		this.actor = new ActorPlayer(this, primaryStage);
@@ -30,6 +30,10 @@ public class Controller {
 	
 	public ActorPlayer getActorPlayer() {
 		return actor;
+	}
+	
+	public boolean getEndGame() {
+		return this.endGame;
 	}
 	
 	public boolean getChooseObjectives() {
@@ -74,7 +78,7 @@ public class Controller {
 		otherPlayer.setColor(otherPosition);
 		
 		// CRIAR BOARD + BARALHO + MAPA - O PRIMEIRO JOGADOR CRIA O BARALHO
-		this.board = new Board(true);
+		this.board = new Board(this.playerTurn);
 
 		// COLOCA JOGADOR NO JOGO
 		this.board.setPlayer(player);
@@ -92,6 +96,14 @@ public class Controller {
 		if (this.status == Action.CHOOSE_OBJECTIVE) {			
 			this.status = 10;
 
+			this.action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
+			
+			// RECEBE MAO INICIAL
+			action.startHand = board.startHand(null);
+			
+			// ENVIA PREPARACAOO PARA OPONENTE
+			action.deck = board.getDeck();
+			
 			// COMPRA 3 CARTAS
 			ObjectiveCard[] objectives = board.buyObjectivies();
 	
@@ -117,13 +129,6 @@ public class Controller {
 				}
 			}
 			
-			this.action = new Action(Action.CHOOSE_OBJECTIVE, board.getPlayer().getName());
-	
-			// RECEBE MAO INICIAL
-			action.startHand = board.startHand(null);
-			
-			// ENVIA PREPARACAOO PARA OPONENTE
-			action.deck = board.getDeck();
 			action.choice = choose;
 			this.endTurn();
 		}
@@ -171,29 +176,22 @@ public class Controller {
 	public void drawCards(boolean deck, int choice) {
 		if (status == -1) {
 			this.action = new Action(Action.BUY_WAGONCARD, this.board.getPlayer().getName());				
-			this.drawCards = 0;
 			this.status = 30;
-			this.drawCardBoard(deck, choice);
-			this.drawCards += 1;
+			this.drawCardBoard(deck, choice, 0);
 		} else if (status == 30) {
 			this.status = 10;
-			this.drawCardBoard(deck, choice);
+			this.drawCardBoard(deck, choice, 1);
 		}
 	}
 	
-	private void drawCardBoard(boolean deck, int choice) {
+	private void drawCardBoard(boolean deck, int choice, int position) {
 		if(deck) {
 			this.board.buyWagonCard(true);
 			this.action.buyDeckCard +=1;
 			
 		} else {
 			this.board.drawBoardCard(choice, true);
-			action.drawBoardCard[this.drawCards] = choice;
-			
-			boolean joker = board.getDeck().isJoker(choice);
-			if(joker) {
-				this.status = 10;
-			}
+			action.drawBoardCard[position] = choice;
 		}
 		
 	}
@@ -203,31 +201,28 @@ public class Controller {
 		if (status == -1) {
 			// CONSTRUIR LINHA SE POSSIVEL
 			boolean build = this.board.buildLine(line, color, true);
-	
+
 			// ENVIAR JOGADA
-			this.action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
 			if (build) {
+				this.action = new Action(Action.BUILD_LINE, board.getPlayer().getName());
 				action.line = line;
+				action.color = color;
+				// ULTIMO TURNO DO PROXIMO JOGADOR - NÃO IMPLEMENTADO
+
+				this.status = 10;
+				this.endTurn();
 			}
 	
-			// ULTIMO TURNO DO PROXIMO JOGADOR
-			if (this.board.getPlayer().twoWagons()) {
-				action.lastTurn = true;
-			}
-			this.status = 10;
-			this.endTurn();
 		}
 	}
 	
 	
 	// CASO DE USO FINALIZAR ACAO - ULTIMO TURNO N�O IMPLEMENTADO
 	public void endTurn() {
-		System.out.println(this.board.getPlayer().getName() + " - " + this.playerTurn + " - " + this.status);
 		if (status == 10) {
 			this.playerTurn = false;
 			this.netGames.sendAction(this.action);
 			this.status = -100;
-			System.out.println(this.board.getPlayer().getName() + " - " + this.playerTurn + " - " + this.status);
 		} 
 	}
 
@@ -236,6 +231,9 @@ public class Controller {
 		
 		switch(action.action) {
 			case Action.CHOOSE_OBJECTIVE:
+				// RECEBER MAO INICIAL
+
+				this.board.startHand(action.startHand);
 				// RECEBER DECK
 				this.board.setDeck(action.deck);		
 				
@@ -259,10 +257,8 @@ public class Controller {
 					}
 				}
 				
-				// RECEBER MAO INICIAL
-				this.board.startHand(action.startHand);
 				this.status = 20;
-				System.out.println("sdasda");
+				
 				break;
 			
 			case Action.BUY_OBJECTIVECARD:
@@ -296,7 +292,7 @@ public class Controller {
 							action.buyDeckCard--;
 						}
 					} else {						
-						this.board.drawBoardCard(action.drawBoardCard[0], false);
+						this.board.drawBoardCard(i, false);
 					}	
 				}
 				this.status = -1;
@@ -306,32 +302,24 @@ public class Controller {
 				}
 				this.status = -1;
 		}
-		
-		if (action.lastTurn == true) {
-			if (this.lastTurn == true) {
-				// ACABOU O JOGO
-				this.endGame();
-			} else {
-				// OUTRO JOGADOR TEM MAIS UM TURNO
-				this.lastTurn = true;
-			}
-		}
-		
-		
+
+		// IMPLEMENTAR ULTIMO TURNO
+				
 		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
-
-		// teste
 		
-		// TESTE --- ATUALIZAR TELA 
+		this.actor.refreshGUI();
+
 	}
 
 	private void endGame() {
+		// ENVIAR FIM JOGO
+
 		// CALCULAR PONTUA��O DE CADA JOGADDOR
 		
 		// MOSTRAR PONTUA��O
 		
-		// RESTART
+		// RESTART MESA
 		this.clear();
 		
 	}
@@ -349,6 +337,7 @@ public class Controller {
 	}
 	
 	public void clear() {
+		this.status = -100;
 		this.board = null;
 		this.playerTurn = false;
 	}

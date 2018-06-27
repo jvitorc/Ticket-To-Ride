@@ -22,7 +22,7 @@ public class Action implements Jogada {
 		this.action = action;
 		this.player = player;
 	}
-	// TIPO DE A��O
+	// TIPO DE ACAO
 	public int action;
 	
 	// NOME DO JOGADOR
@@ -34,7 +34,10 @@ public class Action implements Jogada {
 	// OBJETIVOS COMPRADOS
 	public ArrayList<ObjectiveCard> objectives;
 	
-	// CONTROLE �LTIMO TURNO
+	// CONTROLE DE FIM DE JOGO
+	
+	public int endGame;
+	// CONTROLE ULTIMO TURNO
 	public boolean lastTurn;
 	
 	// COMPRAR OBJETIVO
@@ -43,7 +46,7 @@ public class Action implements Jogada {
 	// QUANTIDADE DE CARTA COMPRADA DO DECK
 	public int buyDeckCard = 0;
 	
-	// POSI��O DAS CARTAS COMPRADA NA MESA
+	// POSICAO DAS CARTAS COMPRADA NA MESA
 	public int[] drawBoardCard = {-1, -1};
 
 	// MAO INICIAL
@@ -55,6 +58,8 @@ public class Action implements Jogada {
 	// COR DA LINHA
 	public int color;
 
+	
+	
 	@Override
 	public String toString() {
 		return "Action [action=" + action + ", player=" + player + ", deck=" + deck + ", objectives=" + objectives

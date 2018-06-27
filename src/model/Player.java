@@ -92,9 +92,9 @@ public class Player {
 	}
 	
 	public boolean addLine(Line line, int color) {
-		// TESTA SE TEM VAG�O
+		// TESTA SE TEM VAGAO
 		if (line.getSize() < this.wagons ) {
-			// TESTE SE COR E LINHA S�O DO TIPO CERTO
+			// TESTE SE COR E LINHA SAO DO TIPO CERTO
 			boolean b1 = line.getColor() == WagonCard.MULTICOLOR;
 			boolean b2 = color == WagonCard.MULTICOLOR;
 			boolean b3 = line.getColor() == color;
@@ -111,14 +111,15 @@ public class Player {
 					}
 				}
 				
-				// SE TEM CARTAS E VAG�ES ADD LINE
+				// SE TEM CARTAS E VAGOES ADD LINE
 				if (list.size() == line.getSize()) {
 					for (WagonCard c: list) {
 						this.cards.remove(c);
 					}
 					this.wagons -=  line.getSize();
 					this.lines.add(line);
-					// ATUALIZAR PONTUA��O
+					line.setPlayer(this);
+					// ATUALIZAR PONTUACAO
 					this.updateLinePoints(line.getSize());
 					return true;
 				}
@@ -129,13 +130,13 @@ public class Player {
 
 	public int updateObjectivePoints() {
 
-		for (ObjectiveCard ob: this.objectives) {
-			if(ob.isComplete() == true) {
-				this.points += ob.getPoints();
-			} else {
-				this.points -= ob.getPoints();
-			}
-		}
+//		for (ObjectiveCard ob: this.objectives) {
+//			if(ob.isComplete() == true) {
+//				this.points += ob.getPoints();
+//			} else {
+//				this.points -= ob.getPoints();
+//			}
+//		}
 		
 		return this.points;
 	}
@@ -144,28 +145,35 @@ public class Player {
 		switch (sizeLine) {
 			case 1:
 				this.points += 1;
+				break;
 			case 2:
 				this.points += 2;
+				break;
 			case 3:
 				this.points += 4;
+				break;
 			case 4:
 				this.points += 7;
+				break;
 			case 5:
 				this.points += 10;
+				break;
 			case 6:
 				this.points += 15;
+				break;
 			default:
 				this.points += 0;
 		}
 	}
+		
 
 	public boolean twoWagons() {
-		return this.wagons <= 2;
+		return this.wagons < 3;
 	}
 	
 	@Override
 	public String toString() {
-		return name;
+		return name + " - " + this.points + " : " + this.wagons;
 	}
 
 }

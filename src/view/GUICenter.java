@@ -97,7 +97,7 @@ public class GUICenter {
         ToggleButton route = new ToggleButton(routeName);
         Insets routePadding = new Insets(5, 20, 5, 20);
 
-        route.setMinWidth(200);
+        route.setMaxWidth(150);
         route.setPadding(routePadding);
         return route;
     }
@@ -110,11 +110,12 @@ public class GUICenter {
                 actorPlayer.buildLine(lineData.getLineIndex(), lineData.getColor());
                 consumeRoute(lineData, group, actorPlayer.getGUIPlayers().get(0));
             } else {
-                GUIMessageBox.display("Alerta", "Rota já está ocupada");
+                GUIMessageBox.display("Alerta", "Rota jï¿½ estï¿½ ocupada");
             }
         } catch (NullPointerException e){
-            GUIMessageBox.display("Alerta", "Trilha não selecionada");
+            GUIMessageBox.display("Alerta", "Trilha nï¿½o selecionada");
         }
+        this.actorPlayer.refreshGUI();
     }
 
     private void consumeRoute(GUILine lineData, ToggleGroup group, GUIPlayer guiPlayer) {
