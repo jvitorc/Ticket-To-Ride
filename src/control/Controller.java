@@ -299,9 +299,6 @@ public class Controller {
 				this.status = -1;
 		}
 
-		// IMPLEMENTAR ULTIMO TURNO
-				
-		// ATUALIZAR VEZ DO JOGADOR
 		this.playerTurn = true;
 		
 		this.actor.refreshGUI();
@@ -309,13 +306,6 @@ public class Controller {
 	}
 
 	public void endGame() {
-		// ENVIAR FIM JOGO
-
-		// CALCULAR PONTUA��O DE CADA JOGADDOR
-		
-		// MOSTRAR PONTUA��O
-		
-		// RESTART MESA
 		this.clear();
 		
 	}

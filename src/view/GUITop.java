@@ -112,7 +112,7 @@ class GUITop {
            window.close();
            try {
                map.close();
-           } catch (NullPointerException e) { System.out.println("mapa nao tava aberto"); }
+           } catch (NullPointerException e) { }
        }
     }
 }

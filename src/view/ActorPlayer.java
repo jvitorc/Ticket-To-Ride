@@ -74,7 +74,7 @@ public class ActorPlayer {
 	// CASO DE USO DESCONECTAR
 	public void disconnect() {
 		controller.disconnectGUI();
-		this.showMessage("DESCONECTOU", ActorPlayer.SUCCESSUFUL);
+		this.showMessage("Desconectou", ActorPlayer.SUCCESSUFUL);
 	}
 
 	public boolean isConnect() {
